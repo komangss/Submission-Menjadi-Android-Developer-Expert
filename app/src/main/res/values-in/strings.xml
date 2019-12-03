@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">submissionMADE3</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+
+    <string name="movie">Film</string>
+
+    <string name="tv_show">Acara TV</string>
+    <string name="change_language_settings">Ubah Pengaturan Bahasa</string>
+
+</resources>

@@ -1,0 +1,18 @@
+<resources>
+
+
+    <string name="app_name">submissionMADE3</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+
+    <string name="movie">Movie</string>
+
+    <string name="tv_show">Tv Show</string>
+    <string name="change_language_settings">change language settings</string>
+    <string name="ini_main_activity" translatable="false">ini main activity</string>
+    <string name="title_movie_received" translatable="false">title_movie_received</string>
+    <string name="description" translatable="false">description</string>
+    <string name="title_movie_received2" translatable="false">title_movie_received2</string>
+    <string name="description" translatable="false">description</string>
+
+</resources>
