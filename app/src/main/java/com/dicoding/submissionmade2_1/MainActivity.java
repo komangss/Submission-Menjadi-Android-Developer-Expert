@@ -6,6 +6,7 @@ import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.dicoding.submissionmade2_1.Fragment.FavoriteFragment;
 import com.dicoding.submissionmade2_1.Fragment.MovieFragment;
 import com.dicoding.submissionmade2_1.Fragment.TvShowFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -36,7 +37,12 @@ public class MainActivity extends AppCompatActivity {
                             .replace(R.id.container, fragment, fragment.getClass().getSimpleName())
                             .commit();
                     return true;
-//                case R.id.navigation
+                case R.id.navigation_favorite:
+                    fragment = new FavoriteFragment();
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.container, fragment, fragment.getClass().getSimpleName())
+                            .commit();
+                    return true;
             }
             return false;
         }

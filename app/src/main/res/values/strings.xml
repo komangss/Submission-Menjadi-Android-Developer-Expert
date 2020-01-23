@@ -13,5 +13,9 @@
     <string name="title_movie_received" translatable="false">title_movie_received</string>
     <string name="description" translatable="false">description</string>
     <string name="title_movie_received2" translatable="false">title_movie_received2</string>
+    <string name="txt_favorite">Favorite</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

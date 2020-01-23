@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp">
@@ -19,6 +20,7 @@
         android:id="@+id/tv_title_received"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="36dp"
         android:text="@string/title_movie_received"
         android:textSize="25sp"
@@ -32,10 +34,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:lines="3"
+        android:layout_marginStart="8dp"
         android:text="@string/description"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_title_received"
         app:layout_constraintVertical_bias="0.047" />
+
+    <Button
+        android:id="@+id/favorite_this_movie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Favorite this"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_description_received"
+        app:layout_constraintVertical_bias="0.083" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
