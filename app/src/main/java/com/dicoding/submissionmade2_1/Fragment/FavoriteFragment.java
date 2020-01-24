@@ -37,7 +37,7 @@ public class FavoriteFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static FavoriteFragment newInstance(int index) {
+    public static FavoriteFragment newInstance( int index) {
         FavoriteFragment fragment = new FavoriteFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(ARG_SECTION_NUMBER, index);
@@ -69,7 +69,8 @@ public class FavoriteFragment extends Fragment {
         favoriteViewModel.getAllFavorites().observe(this, new Observer<List<Favorite>>() {
             @Override
             public void onChanged(List<Favorite> favorites) {
-                Toast.makeText(getActivity(), "onChanged", Toast.LENGTH_SHORT).show();
+                adapter.setFavorites(favorites);
+                Toast.makeText(getActivity(),"onChanged",Toast.LENGTH_SHORT).show();
             }
         });
         return myFragmentView;

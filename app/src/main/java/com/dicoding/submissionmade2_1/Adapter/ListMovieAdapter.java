@@ -83,5 +83,4 @@ public class ListMovieAdapter extends RecyclerView.Adapter<ListMovieAdapter.List
                     .into(imgPhoto);
         }
     }
-
 }

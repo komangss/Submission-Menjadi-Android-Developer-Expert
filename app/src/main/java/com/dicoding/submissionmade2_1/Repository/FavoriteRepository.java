@@ -55,12 +55,16 @@ public class FavoriteRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             LiveData<List<Favorite>> favoriteData = favoriteDao.checkMoviesById(idMovie);
-            if (!(favoriteData == null)) {
-                FavoriteRepository.dataFavoriteById = favoriteData;
-            }
+            FavoriteRepository.dataFavoriteById = favoriteData;
             return null;
         }
     }
+
+
+
+
+
+
 
     private static class InsertFavoriteAsyncTask extends AsyncTask<Favorite, Void, Void> {
         private FavoriteDao favoriteDao;

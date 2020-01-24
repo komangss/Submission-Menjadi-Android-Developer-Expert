@@ -30,7 +30,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
     int id_movie;
     private List<Favorite> favorites = new ArrayList<>();
     private static final String API_KEY = "d9c1d6e1b7d10d2ad0ac0c8e7e9abb81";
-    String url = "https://api.themoviedb.org/3/discover/movie?" + id_movie + "api_key=" + API_KEY + "&language=en-US";
+    String url = "https://api.themoviedb.org/3/movie/" + id_movie + "?api_key=" + API_KEY + "&language=en-US";
 
 
     @NonNull
@@ -53,11 +53,14 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            JSONArray list = response.getJSONArray("results");
-                            for (int i = 0; i < list.length(); i++) {
-                                JSONObject movieFavorite = list.getJSONObject(i);
-                                holder.tvTitle.setText(movieFavorite.getJSONArray("0").toString());
-                            }
+                            String title = response.getString("original_title");
+                            Log.d("ini isi JSON : ", title);
+                            holder.tvTitle.setText(title);
+//                            JSONArray list = response.getJSONArray("results");
+//                            for (int i = 0; i < list.length(); i++) {
+//                                JSONObject movieFavorite = list.getJSONObject(i);
+//                                holder.tvTitle.setText(movieFavorite.getJSONArray("0").toString());
+//                            }
                         } catch (JSONException e) {
                             Log.d("Exception", e.getMessage());
                         }

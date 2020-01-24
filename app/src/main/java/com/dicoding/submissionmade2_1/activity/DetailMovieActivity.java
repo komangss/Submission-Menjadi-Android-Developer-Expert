@@ -2,10 +2,12 @@ package com.dicoding.submissionmade2_1.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -24,8 +26,11 @@ public class DetailMovieActivity extends AppCompatActivity {
 
     FavoriteViewModel favoriteViewModel;
     Button btn_favorite_this;
+    TextView tv_favorite;
     public static final String EXTRA_MOVIE = "extra_movie";
     public static int EXTRA_ID_MOVIE = 0;
+    public LiveData<List<Favorite>> dataCheck;
+    public boolean isFavoriteAlready;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +38,12 @@ public class DetailMovieActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail_movie);
 
         btn_favorite_this = findViewById(R.id.favorite_this_movie);
+        tv_favorite = findViewById(R.id.favorite_already);
 
         TextView tvTitle = findViewById(R.id.tv_title_received),
                 tvDescription = findViewById(R.id.txt_description_received);
         ImageView imgPoster = findViewById(R.id.img_received);
+
 
 
         try {
@@ -51,51 +58,64 @@ public class DetailMovieActivity extends AppCompatActivity {
                     .dontAnimate()
                     .into(imgPoster);
             EXTRA_ID_MOVIE = movie.getIdMovie();
-//            imgPoster.setImageResource(movie.getPoster());
+
+            // favorite = new Favorite(EXTRA_ID_MOVIE);
+
+            //            imgPoster.setImageResource(movie.getPoster());
         } catch (Exception e) {
 
         }
+
+        favoriteViewModel = ViewModelProviders.of(this).get(FavoriteViewModel.class);
+
+        try {
+
+            dataCheck = favoriteViewModel.checkMoviesById(EXTRA_ID_MOVIE);
+
+            if(dataCheck == null ) {
+                isFavoriteAlready = false;
+                tv_favorite.setText("favorite : nope");
+            } else {
+                isFavoriteAlready = true;
+                tv_favorite.setText("favorite : already");
+            }
+
+            dataCheck.observe(this, new Observer<List<Favorite>>() {
+                @Override
+                public void onChanged(List<Favorite> favorites) {
+                    Log.d("isi favorite ", String.valueOf(favorites));
+                    if(favorites == null || favorites.size() == 0) {
+                        isFavoriteAlready = false;
+                        tv_favorite.setText("favorite : nope");
+                    } else {
+                        isFavoriteAlready = true;
+                        tv_favorite.setText("favorite : already");
+                    }
+
+                }
+            });
+
+        } catch (NullPointerException e) {
+            Log.d("ini bug nya", e.getMessage());
+        }
+
 
         btn_favorite_this.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Favorite favorite = new Favorite(EXTRA_ID_MOVIE);
-//                if () {
-                new InsertInBackground(favorite).execute();
-//                } else {
-//                    liked true
-//                }
-                Toast.makeText(DetailMovieActivity.this, "You Favorite This Movie", Toast.LENGTH_SHORT).show();
+                if (isFavoriteAlready) {
+//                    delete
+                    favoriteViewModel.delete(favorite);
+                    isFavoriteAlready = false;
+                    Toast.makeText(DetailMovieActivity.this, "You delete Favorite This Movie : " + isFavoriteAlready , Toast.LENGTH_SHORT).show();
+                } else {
+                    favoriteViewModel.insert(favorite);
+                    isFavoriteAlready = true;
+                    Toast.makeText(DetailMovieActivity.this, "You Favorite This Movie", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }
-
-    private class InsertInBackground extends AsyncTask<Favorite, Void, Void> {
-        private Favorite favorite;
-
-        private InsertInBackground(Favorite favorite) {
-            this.favorite = favorite;
-        }
-
-        @Override
-        protected Void doInBackground(Favorite... favorites) {
-            favoriteViewModel.insert(favorite);
-            return null;
-        }
-    }
-
-    private class CheckMovieById extends AsyncTask<Void, Void, Void> {
-        private int idMovie;
-
-        private CheckMovieById(int idMovie) {
-            this.idMovie = idMovie;
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            LiveData<List<Favorite>> datanya = favoriteViewModel.checkMoviesById(idMovie);
-            return null;
-        }
-    }
-
 }

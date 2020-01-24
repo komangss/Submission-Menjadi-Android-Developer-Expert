@@ -30,4 +30,8 @@ public class Favorite {
     public void setId(int id) {
         this.id = id;
     }
+
+//    simpen title poster dengan descripsi
+//    kalo udh gitu terus kita validaso. select data dari database jika tidak ada yang sama maka gaz
+
 }
