@@ -42,4 +42,10 @@ dependencies {
     implementation 'com.amitshekhar.android:android-networking:1.0.2'
 
     implementation 'com.loopj.android:android-async-http:1.4.9'
+
+    def room_version = "2.2.3"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+
 }

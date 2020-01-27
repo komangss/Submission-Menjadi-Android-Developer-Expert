@@ -2,13 +2,28 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".FavoriteFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
 
+        <Button
+            android:layout_marginStart="18dp"
+            android:id="@+id/btn_to_favorite_movie"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:text="Favorite Movie" />
+
+
+        <Button
+            android:layout_marginStart="18dp"
+            android:layout_toEndOf="@id/btn_to_favorite_movie"
+            android:id="@+id/btn_to_favorite_tv_show"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:text="Favorite Tv Show" />
+
+    </RelativeLayout>
 </FrameLayout>
