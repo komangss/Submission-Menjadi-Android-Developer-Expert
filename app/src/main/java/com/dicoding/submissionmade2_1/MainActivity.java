@@ -36,7 +36,12 @@ public class MainActivity extends AppCompatActivity {
                             .replace(R.id.container, fragment, fragment.getClass().getSimpleName())
                             .commit();
                     return true;
-//                case R.id.navigation
+                case R.id.navigation_favorites:
+                    fragment = new FavoriteFragment();
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.container, fragment, fragment.getClass().getSimpleName())
+                            .commit();
+                    return true;
             }
             return false;
         }
