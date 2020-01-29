@@ -1,11 +1,13 @@
 package com.dicoding.submissionmade2_1.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,6 +26,11 @@ public class DetailMovieActivity extends AppCompatActivity {
     public static final String EXTRA_MOVIE = "extra_movie";
     FavoriteMovieViewModel favoriteMovieViewModel;
     int idMovie;
+    LiveData<List<FavoriteMovie>> dataCheck;
+    Boolean booleanApakahFavoriteMovieIniAda;
+
+    FavoriteMovie favoriteMovie;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,21 +55,84 @@ public class DetailMovieActivity extends AppCompatActivity {
                     .dontAnimate()
                     .into(imgPoster);
             idMovie = movie.getIdMovie();
+
+            favoriteMovie = new FavoriteMovie(movie.getPoster(), movie.getTitle(), movie.getDescription(), movie.getIdMovie());
+
             Log.d("id movie", String.valueOf(idMovie));
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-
         favoriteMovieViewModel = ViewModelProviders.of(this).get(FavoriteMovieViewModel.class);
-        favoriteMovieViewModel.getAllFavoriteMovieById(idMovie).observe(this, new Observer<List<FavoriteMovie>>() {
-            @Override
-            public void onChanged(List<FavoriteMovie> favoriteMovies) {
-                if (favoriteMovies.size() == 0) {
-                    Toast.makeText(DetailMovieActivity.this, "tak berisi", Toast.LENGTH_SHORT).show();
-                }
 
+        try {
+
+            dataCheck = favoriteMovieViewModel.getAllFavoriteMovieById(idMovie);
+
+            if (dataCheck == null) {
+                booleanApakahFavoriteMovieIniAda = false;
+            } else {
+                booleanApakahFavoriteMovieIniAda = true;
+            }
+
+
+        } catch (NullPointerException e) {
+            Log.d("ini bug nya", e.getMessage());
+        }
+
+        btn_favorite_this_movie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (booleanApakahFavoriteMovieIniAda) { // true
+                    favoritekan(true); // delete
+                    Toast.makeText(DetailMovieActivity.this, "movie ini tidak difavoritkan", Toast.LENGTH_SHORT).show();
+                } else {
+                    favoritekan(false);
+                    Toast.makeText(DetailMovieActivity.this, "movie ini difavoritkan", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+
+    }
+
+//    @Override
+//    public void onBackPressed() {
+//        favoriteMovieViewModel = ViewModelProviders.of(this).get(FavoriteMovieViewModel.class);
+//        if (!booleanApakahFavoriteMovieIniAda) {
+////            insert
+//            favoriteMovieViewModel.insert(favoriteMovie);
+//            finish();
+//        } else {
+//            favoriteMovieViewModel.delete(favoriteMovie);
+//            finish();
+//        }
+//    }
+
+
+//    Atau
+//
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        favoriteMovieViewModel = ViewModelProviders.of(this).get(FavoriteMovieViewModel.class);
+//        if (!booleanApakahFavoriteMovieIniAda) {
+////            insert
+//            favoriteMovieViewModel.insert(favoriteMovie);
+//            finish();
+//        } else {
+//            favoriteMovieViewModel.delete(favoriteMovie);
+//            finish();
+//        }
+//    }
+
+    private void favoritekan(Boolean booleanApakahFavoriteMovieIniAda) {
+        if (!booleanApakahFavoriteMovieIniAda) { // false
+//            insert
+            favoriteMovieViewModel.insert(favoriteMovie);
+            this.booleanApakahFavoriteMovieIniAda = true;
+        } else { // true
+            favoriteMovieViewModel.delete(favoriteMovie);
+            this.booleanApakahFavoriteMovieIniAda = false;
+        }
     }
 }

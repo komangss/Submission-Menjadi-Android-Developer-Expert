@@ -83,7 +83,6 @@ public class FavoriteMovieRepository {
         @Override
         protected Void doInBackground(Integer... integers) {
             FavoriteMovieRepository.favoriteMovieById = favoriteMovieDao.getFavoriteMovieById(integers[0]);
-            Log.d("Result : ", FavoriteMovieRepository.favoriteMovieById.getValue().toString());
             return null;
         }
     }
