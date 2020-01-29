@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 public class Movie implements Parcelable {
     private String poster, title, description;
+    private int idMovie;
 
     public String getPoster() {
         return poster;
@@ -45,6 +46,7 @@ public class Movie implements Parcelable {
         parcel.writeString(this.poster);
         parcel.writeString(this.title);
         parcel.writeString(this.description);
+        parcel.writeInt(this.idMovie);
     }
 
     public Movie(JSONObject object) {
@@ -52,10 +54,12 @@ public class Movie implements Parcelable {
             String title = object.getString("title");
             String description = object.getString("overview");
             String poster_path = object.getString("poster_path");
+            int idMovie = object.getInt("id");
 
             this.title = title;
             this.description = description;
             this.poster = poster_path;
+            this.idMovie = idMovie;
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -66,6 +70,7 @@ public class Movie implements Parcelable {
         poster = in.readString();
         title = in.readString();
         description = in.readString();
+        idMovie = in.readInt();
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
@@ -79,5 +84,13 @@ public class Movie implements Parcelable {
             return new Movie[size];
         }
     };
+
+    public int getIdMovie() {
+        return idMovie;
+    }
+
+    public void setIdMovie(int idMovie) {
+        this.idMovie = idMovie;
+    }
 }
 
