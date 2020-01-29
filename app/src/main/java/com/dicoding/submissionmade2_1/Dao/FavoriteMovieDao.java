@@ -1,5 +1,6 @@
 package com.dicoding.submissionmade2_1.Dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -23,7 +24,10 @@ public interface FavoriteMovieDao {
     void delete(FavoriteMovie favoriteMovie);
 
     @Query("SELECT * FROM favorite_table")
-    List<FavoriteMovie> getAllFavoriteMovie();
+    LiveData<List<FavoriteMovie>> getAllFavoriteMovie();
+
+    @Query("SELECT * FROM favorite_table WHERE id_movie = :id")
+    LiveData<List<FavoriteMovie>> getFavoriteMovieById(int id);
 
 
 }

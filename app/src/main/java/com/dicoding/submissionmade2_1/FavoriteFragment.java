@@ -4,6 +4,8 @@ package com.dicoding.submissionmade2_1;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -30,19 +32,21 @@ public class FavoriteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        btnToMovie = getView().findViewById(R.id.btn_to_favorite_movie);
-        btnToMovie.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openFavoriteMovieActivity();
-            }
-        });
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_favorite, container, false);
     }
 
-    private void openFavoriteMovieActivity() {
-        Intent intent = new Intent(getActivity(), FavoriteMovieActivity.class);
-        startActivity(intent);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        btnToMovie = getView().findViewById(R.id.btn_to_favorite_movie);
+        btnToMovie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), FavoriteMovieActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 }
