@@ -33,7 +33,7 @@ public class DetailMovieActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) throws NullPointerException {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_movie);
 
@@ -41,8 +41,6 @@ public class DetailMovieActivity extends AppCompatActivity {
                 tvDescription = findViewById(R.id.txt_description_received);
         ImageView imgPoster = findViewById(R.id.img_received);
         Button btn_favorite_this_movie = findViewById(R.id.favorite_this_movie);
-        Button btn_remove_this_favorite_movie = findViewById(R.id.remove_favorite_movie);
-
 
         try {
             Movie movie = getIntent().getParcelableExtra(EXTRA_MOVIE);
@@ -66,20 +64,11 @@ public class DetailMovieActivity extends AppCompatActivity {
 
         favoriteMovieViewModel = ViewModelProviders.of(this).get(FavoriteMovieViewModel.class);
 
-        try {
+        dataCheck = favoriteMovieViewModel.getAllFavoriteMovieById(idMovie);
 
-            dataCheck = favoriteMovieViewModel.getAllFavoriteMovieById(idMovie);
+        // kalau ga ada data yg terdeteksi
+        booleanApakahFavoriteMovieIniAda = dataCheck != null;
 
-            if (dataCheck == null) { // kalau ga ada data yg terdeteksi
-                booleanApakahFavoriteMovieIniAda = false;
-            } else {
-                booleanApakahFavoriteMovieIniAda = true;
-            }
-
-
-        } catch (NullPointerException e) {
-            Log.d("ini bug nya", e.getMessage());
-        }
 
         btn_favorite_this_movie.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,68 +83,21 @@ public class DetailMovieActivity extends AppCompatActivity {
             }
         });
 
-        btn_remove_this_favorite_movie.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(DetailMovieActivity.this, "movie ini tidak difavoritkan", Toast.LENGTH_SHORT).show();
-                favoritkanMovieIni(true);
-            }
-        });
-
     }
-
-//    @Override
-//    public void onBackPressed() {
-//        favoriteMovieViewModel = ViewModelProviders.of(this).get(FavoriteMovieViewModel.class);
-//        if (!booleanApakahFavoriteMovieIniAda) {
-////            insert
-//            favoriteMovieViewModel.insert(favoriteMovie);
-//            finish();
-//        } else {
-//            favoriteMovieViewModel.delete(favoriteMovie);
-//            finish();
-//        }
-//    }
-
-
-//    Atau
-//
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        favoriteMovieViewModel = ViewModelProviders.of(this).get(FavoriteMovieViewModel.class);
-//        if (!booleanApakahFavoriteMovieIniAda) {
-////            insert
-//            favoriteMovieViewModel.insert(favoriteMovie);
-//            finish();
-//        } else {
-//            favoriteMovieViewModel.delete(favoriteMovie);
-//            finish();
-//        }
-//    }
 
     private void favoritkanMovieIni(Boolean booleanApakahFavoriteMovieIniAda) {
         if (!booleanApakahFavoriteMovieIniAda) { // false
 //            insert
             Log.d("insert data", "berhasil");
             favoriteMovieViewModel.insert(favoriteMovie);
-            this.booleanApakahFavoriteMovieIniAda = true;
         } else { // true
             try {
-                Log.d("delete data", "berhasil kesini");
-//                this.favoriteMovieViewModel.delete(this.favoriteMovie);
                 favoriteMovieViewModel.deleteMovieById(idMovie);
-                this.booleanApakahFavoriteMovieIniAda = false;
+                dataCheck = null;
             } catch (ExceptionInInitializerError e) {
-                Log.d("asu", "asuuuuuu");
                 e.printStackTrace();
             }
         }
     }
 
-    private void hilangkanFavoritMovieIni() {
-        Log.d("delete data", "berhasil kesini");
-        favoriteMovieViewModel.delete(favoriteMovie);
-        this.booleanApakahFavoriteMovieIniAda = false;
-    }
 }

@@ -10,20 +10,24 @@
         android:layout_height="match_parent">
 
         <Button
-            android:layout_marginStart="18dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginStart="12dp"
+            android:drawableStart="@drawable/ic_local_movies_black_24dp"
             android:id="@+id/btn_to_favorite_movie"
             android:layout_width="160dp"
-            android:layout_height="160dp"
-            android:text="Favorite Movie" />
+            android:layout_height="80dp"
+            android:text="@string/favorite_movie" />
 
 
         <Button
+            android:layout_marginTop="32dp"
             android:layout_marginStart="18dp"
+            android:drawableStart="@drawable/ic_tv_black_24dp"
             android:layout_toEndOf="@id/btn_to_favorite_movie"
             android:id="@+id/btn_to_favorite_tv_show"
             android:layout_width="160dp"
-            android:layout_height="160dp"
-            android:text="Favorite Tv Show" />
+            android:layout_height="80dp"
+            android:text="@string/favorite_tv_show" />
 
     </RelativeLayout>
 </FrameLayout>

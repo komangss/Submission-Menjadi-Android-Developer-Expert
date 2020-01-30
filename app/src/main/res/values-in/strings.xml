@@ -8,4 +8,8 @@
     <string name="tv_show">Acara TV</string>
     <string name="change_language_settings">Ubah Pengaturan Bahasa</string>
 
+    <string name="favorite_this_movie">Saya Suka Film Ini</string>
+    <string name="favorite_movie">Film Favorit</string>
+    <string name="favorite_tv_show">Acara Tv Favorit</string>
+
 </resources>

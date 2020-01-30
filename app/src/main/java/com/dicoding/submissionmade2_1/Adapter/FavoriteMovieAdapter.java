@@ -43,15 +43,10 @@ public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdap
         notifyDataSetChanged();
     }
 
-    public FavoriteMovie getFavoriteMovieAt(int positionn) {
-        return favoriteMovies.get(positionn);
-    }
-
-
     class FavoriteMovieHolder extends RecyclerView.ViewHolder {
         private TextView tvTitle, tvDescription;
 
-        public FavoriteMovieHolder(@NonNull View itemView) {
+        FavoriteMovieHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tv_title);
             tvDescription = itemView.findViewById(R.id.tv_description);
