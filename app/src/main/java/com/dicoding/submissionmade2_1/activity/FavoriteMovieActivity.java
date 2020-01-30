@@ -52,7 +52,8 @@ public class FavoriteMovieActivity extends AppCompatActivity {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                favoriteMovieViewModel.delete(adapter.getFavoriteMovieAt(viewHolder.getAdapterPosition()));
+                FavoriteMovie favoriteMovie = adapter.getFavoriteMovieAt(viewHolder.getAdapterPosition());
+                favoriteMovieViewModel.delete(favoriteMovie);
                 Toast.makeText(FavoriteMovieActivity.this, "Favorite Movie Deleted", Toast.LENGTH_SHORT).show();
             }
         }).attachToRecyclerView(recyclerView);

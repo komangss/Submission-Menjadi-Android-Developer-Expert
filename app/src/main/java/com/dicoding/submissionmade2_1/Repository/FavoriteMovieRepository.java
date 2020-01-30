@@ -87,4 +87,21 @@ public class FavoriteMovieRepository {
         }
     }
 
+    public void deleteByMovieId(int id_movie) {
+        new DeleteByMovieIdAsyncTask(favoriteMovieDao).execute(id_movie);
+    }
+
+    private static class DeleteByMovieIdAsyncTask extends AsyncTask<Integer, Void, Void> {
+        FavoriteMovieDao favoriteMovieDao;
+
+        public DeleteByMovieIdAsyncTask(FavoriteMovieDao favoriteMovieDao) {
+            this.favoriteMovieDao = favoriteMovieDao;
+        }
+
+        @Override
+        protected Void doInBackground(Integer... integers) {
+            favoriteMovieDao.deleteByMovieId(integers[0]);
+            return null;
+        }
+    }
 }

@@ -27,7 +27,7 @@ public class DetailMovieActivity extends AppCompatActivity {
     FavoriteMovieViewModel favoriteMovieViewModel;
     int idMovie;
     LiveData<List<FavoriteMovie>> dataCheck;
-    Boolean booleanApakahFavoriteMovieIniAda;
+    Boolean booleanApakahFavoriteMovieIniAda; // kalau true berarti delete, kalau false berarti insert
 
     FavoriteMovie favoriteMovie;
 
@@ -41,6 +41,7 @@ public class DetailMovieActivity extends AppCompatActivity {
                 tvDescription = findViewById(R.id.txt_description_received);
         ImageView imgPoster = findViewById(R.id.img_received);
         Button btn_favorite_this_movie = findViewById(R.id.favorite_this_movie);
+        Button btn_remove_this_favorite_movie = findViewById(R.id.remove_favorite_movie);
 
 
         try {
@@ -69,7 +70,7 @@ public class DetailMovieActivity extends AppCompatActivity {
 
             dataCheck = favoriteMovieViewModel.getAllFavoriteMovieById(idMovie);
 
-            if (dataCheck == null) {
+            if (dataCheck == null) { // kalau ga ada data yg terdeteksi
                 booleanApakahFavoriteMovieIniAda = false;
             } else {
                 booleanApakahFavoriteMovieIniAda = true;
@@ -84,12 +85,20 @@ public class DetailMovieActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (booleanApakahFavoriteMovieIniAda) { // true
-                    favoritkanMovieIni(true); // delete
+                    favoritkanMovieIni(true); // data nya ada, ketika di pencet di delete
                     Toast.makeText(DetailMovieActivity.this, "movie ini tidak difavoritkan", Toast.LENGTH_SHORT).show();
-                } else {
+                } else { // ga ada data nya, di insert dong
                     favoritkanMovieIni(false);
                     Toast.makeText(DetailMovieActivity.this, "movie ini difavoritkan", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        btn_remove_this_favorite_movie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(DetailMovieActivity.this, "movie ini tidak difavoritkan", Toast.LENGTH_SHORT).show();
+                favoritkanMovieIni(true);
             }
         });
 
@@ -132,10 +141,21 @@ public class DetailMovieActivity extends AppCompatActivity {
             favoriteMovieViewModel.insert(favoriteMovie);
             this.booleanApakahFavoriteMovieIniAda = true;
         } else { // true
-            favoriteMovieViewModel = ViewModelProviders.of(this).get(FavoriteMovieViewModel.class);
-            Log.d("delete data", "berhasil kesini");
-            favoriteMovieViewModel.delete(favoriteMovie);
-            this.booleanApakahFavoriteMovieIniAda = false;
+            try {
+                Log.d("delete data", "berhasil kesini");
+//                this.favoriteMovieViewModel.delete(this.favoriteMovie);
+                favoriteMovieViewModel.deleteMovieById(idMovie);
+                this.booleanApakahFavoriteMovieIniAda = false;
+            } catch (ExceptionInInitializerError e) {
+                Log.d("asu", "asuuuuuu");
+                e.printStackTrace();
+            }
         }
+    }
+
+    private void hilangkanFavoritMovieIni() {
+        Log.d("delete data", "berhasil kesini");
+        favoriteMovieViewModel.delete(favoriteMovie);
+        this.booleanApakahFavoriteMovieIniAda = false;
     }
 }
