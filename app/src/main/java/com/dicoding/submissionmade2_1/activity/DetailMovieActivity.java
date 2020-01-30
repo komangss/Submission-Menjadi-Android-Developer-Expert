@@ -84,10 +84,10 @@ public class DetailMovieActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (booleanApakahFavoriteMovieIniAda) { // true
-                    favoritekan(true); // delete
+                    favoritkanMovieIni(true); // delete
                     Toast.makeText(DetailMovieActivity.this, "movie ini tidak difavoritkan", Toast.LENGTH_SHORT).show();
                 } else {
-                    favoritekan(false);
+                    favoritkanMovieIni(false);
                     Toast.makeText(DetailMovieActivity.this, "movie ini difavoritkan", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -125,12 +125,15 @@ public class DetailMovieActivity extends AppCompatActivity {
 //        }
 //    }
 
-    private void favoritekan(Boolean booleanApakahFavoriteMovieIniAda) {
+    private void favoritkanMovieIni(Boolean booleanApakahFavoriteMovieIniAda) {
         if (!booleanApakahFavoriteMovieIniAda) { // false
 //            insert
+            Log.d("insert data", "berhasil");
             favoriteMovieViewModel.insert(favoriteMovie);
             this.booleanApakahFavoriteMovieIniAda = true;
         } else { // true
+            favoriteMovieViewModel = ViewModelProviders.of(this).get(FavoriteMovieViewModel.class);
+            Log.d("delete data", "berhasil kesini");
             favoriteMovieViewModel.delete(favoriteMovie);
             this.booleanApakahFavoriteMovieIniAda = false;
         }
