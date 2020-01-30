@@ -9,19 +9,15 @@ import androidx.lifecycle.ViewModel;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.dicoding.submissionmade2_1.Item.Movie;
 import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-
-import cz.msebera.android.httpclient.Header;
 
 public class MovieViewModel extends ViewModel {
     private static final String API_KEY = "d9c1d6e1b7d10d2ad0ac0c8e7e9abb81";
