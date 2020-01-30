@@ -89,8 +89,5 @@ public class Movie implements Parcelable {
         return idMovie;
     }
 
-    public void setIdMovie(int idMovie) {
-        this.idMovie = idMovie;
-    }
 }
 

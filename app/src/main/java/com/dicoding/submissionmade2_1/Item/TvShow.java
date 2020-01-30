@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 public class TvShow implements Parcelable {
     private String poster, title, description;
+    private int idTvShow;
 
     public String getPoster() {
         return poster;
@@ -79,4 +80,8 @@ public class TvShow implements Parcelable {
             return new TvShow[size];
         }
     };
+
+    public int getIdTvShow() {
+        return idTvShow;
+    }
 }
