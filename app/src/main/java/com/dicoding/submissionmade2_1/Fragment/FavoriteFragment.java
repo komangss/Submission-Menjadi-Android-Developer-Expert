@@ -15,6 +15,7 @@ import android.widget.Button;
 
 import com.dicoding.submissionmade2_1.R;
 import com.dicoding.submissionmade2_1.activity.FavoriteMovieActivity;
+import com.dicoding.submissionmade2_1.activity.FavoriteTvShowActivity;
 
 
 /**
@@ -45,6 +46,15 @@ public class FavoriteFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), FavoriteMovieActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnToTvShow = getView().findViewById(R.id.btn_to_favorite_tv_show);
+        btnToTvShow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), FavoriteTvShowActivity.class);
                 startActivity(intent);
             }
         });

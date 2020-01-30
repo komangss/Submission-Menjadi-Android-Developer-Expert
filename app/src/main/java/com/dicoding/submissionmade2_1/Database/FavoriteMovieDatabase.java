@@ -24,34 +24,34 @@ public abstract class FavoriteMovieDatabase extends RoomDatabase {
             instance = Room.databaseBuilder(context.getApplicationContext(),
                     FavoriteMovieDatabase.class, "favorite_movie_database")
                     .fallbackToDestructiveMigration()
-                    .addCallback(roomCallback)
+//                    .addCallback(roomCallback)
                     .build();
         }
         return instance;
     }
 
-    private static RoomDatabase.Callback roomCallback = new RoomDatabase.Callback() {
-        @Override
-        public void onCreate(@NonNull SupportSQLiteDatabase db) {
-            super.onCreate(db);
-            new PopulateDbAsyncTask(instance).execute();
-        }
-    };
-
-    private static class PopulateDbAsyncTask extends AsyncTask<Void, Void, Void> {
-        private FavoriteMovieDao favoriteMovieDao;
-
-        public PopulateDbAsyncTask(FavoriteMovieDatabase db) {
-            favoriteMovieDao = db.favoriteMovieDao();
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-//            insert dummy data
-            favoriteMovieDao.insert(new FavoriteMovie("test 1", "test 1", "test 1", 1));
-            favoriteMovieDao.insert(new FavoriteMovie("test 2", "test 2", "test 2", 1));
-            favoriteMovieDao.insert(new FavoriteMovie("test 3", "test 3", "test 3", 1));
-            return null;
-        }
-    }
+//    private static RoomDatabase.Callback roomCallback = new RoomDatabase.Callback() {
+//        @Override
+//        public void onCreate(@NonNull SupportSQLiteDatabase db) {
+//            super.onCreate(db);
+//            new PopulateDbAsyncTask(instance).execute();
+//        }
+//    };
+//
+//    private static class PopulateDbAsyncTask extends AsyncTask<Void, Void, Void> {
+//        private FavoriteMovieDao favoriteMovieDao;
+//
+//        public PopulateDbAsyncTask(FavoriteMovieDatabase db) {
+//            favoriteMovieDao = db.favoriteMovieDao();
+//        }
+//
+//        @Override
+//        protected Void doInBackground(Void... voids) {
+////            insert dummy data
+//            favoriteMovieDao.insert(new FavoriteMovie("test 1", "test 1", "test 1", 1));
+//            favoriteMovieDao.insert(new FavoriteMovie("test 2", "test 2", "test 2", 1));
+//            favoriteMovieDao.insert(new FavoriteMovie("test 3", "test 3", "test 3", 1));
+//            return null;
+//        }
+//    }
 }
