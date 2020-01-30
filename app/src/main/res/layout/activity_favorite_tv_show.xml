@@ -6,10 +6,9 @@
     tools:context=".activity.FavoriteMovieActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_favorite_movie"
+        android:id="@+id/rv_favorite_tv_show"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/item_favorite_movie" />
-
+        tools:listitem="@layout/item_favorite_tv_show" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.FavoriteMovieActivity"></activity>
+        <activity android:name=".activity.FavoriteTvShowActivity"></activity>
+        <activity android:name=".activity.FavoriteMovieActivity" />
         <activity android:name=".activity.DetailTvShowActivity" />
         <activity android:name=".activity.DetailMovieActivity" />
         <activity

@@ -22,7 +22,7 @@ public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdap
     @Override
     public FavoriteMovieHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.favorite_movie_item, parent, false);
+                .inflate(R.layout.item_favorite_movie, parent, false);
         return new FavoriteMovieHolder(itemView);
     }
 
