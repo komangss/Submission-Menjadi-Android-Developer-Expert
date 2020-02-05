@@ -75,7 +75,7 @@ public class FavoriteMovieRepository {
     private static class GetFavoriteMovieByIdAsyncTask extends AsyncTask<Integer, Void, Void> {
         FavoriteMovieDao favoriteMovieDao;
 
-        public GetFavoriteMovieByIdAsyncTask(FavoriteMovieDao favoriteMovieDao) {
+        GetFavoriteMovieByIdAsyncTask(FavoriteMovieDao favoriteMovieDao) {
             this.favoriteMovieDao = favoriteMovieDao;
         }
 
@@ -94,7 +94,7 @@ public class FavoriteMovieRepository {
     private static class DeleteByMovieIdAsyncTask extends AsyncTask<Integer, Void, Void> {
         FavoriteMovieDao favoriteMovieDao;
 
-        public DeleteByMovieIdAsyncTask(FavoriteMovieDao favoriteMovieDao) {
+        DeleteByMovieIdAsyncTask(FavoriteMovieDao favoriteMovieDao) {
             this.favoriteMovieDao = favoriteMovieDao;
         }
 

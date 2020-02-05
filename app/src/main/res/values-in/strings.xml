@@ -14,4 +14,7 @@
     <string name="favorite_tv_show">Acara Tv Favorit</string>
 
     <string name="favorite_this_tv_show">Saya suka Acara tv Ini</string>
+    <string name="remove_from_favorite">Dihapus Dari Favorit</string>
+    <string name="add_from_favorite">Ditambahkan Dari Favorit</string>
+
 </resources>

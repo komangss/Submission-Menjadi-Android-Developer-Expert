@@ -29,7 +29,6 @@ public class MovieFragment extends Fragment {
 
     private ListMovieAdapter adapter;
     private ProgressBar progressBar;
-    private MovieViewModel moviesViewModel;
 
     public MovieFragment() {
         // Required empty public constructor
@@ -51,7 +50,7 @@ public class MovieFragment extends Fragment {
 
 
 //        buat view model
-        moviesViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
+        MovieViewModel moviesViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
         moviesViewModel.getMovie().observe(this, getMovie);
         moviesViewModel.setMovie("EXTRA_MOVIE");
 

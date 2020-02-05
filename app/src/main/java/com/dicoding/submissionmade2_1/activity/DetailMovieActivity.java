@@ -24,16 +24,15 @@ import java.util.List;
 public class DetailMovieActivity extends AppCompatActivity {
 
     public static final String EXTRA_MOVIE = "extra_movie";
-    FavoriteMovieViewModel favoriteMovieViewModel;
-    int idMovie;
-    LiveData<List<FavoriteMovie>> dataCheck;
-    Boolean booleanApakahFavoriteMovieIniAda; // kalau true berarti delete, kalau false berarti insert
+    private FavoriteMovieViewModel favoriteMovieViewModel;
+    private int idMovie;
+    private Boolean booleanCheckAvailabilityData; // kalau true berarti delete, kalau false berarti insert
 
-    FavoriteMovie favoriteMovie;
+    private FavoriteMovie favoriteMovie;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) throws NullPointerException {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_movie);
 
@@ -41,6 +40,8 @@ public class DetailMovieActivity extends AppCompatActivity {
                 tvDescription = findViewById(R.id.txt_description_received);
         ImageView imgPoster = findViewById(R.id.img_received);
         Button btn_favorite_this_movie = findViewById(R.id.favorite_this_movie);
+
+        LiveData<List<FavoriteMovie>> dataFavoriteMovieById;
 
         try {
             Movie movie = getIntent().getParcelableExtra(EXTRA_MOVIE);
@@ -57,47 +58,52 @@ public class DetailMovieActivity extends AppCompatActivity {
 
             favoriteMovie = new FavoriteMovie(movie.getPoster(), movie.getTitle(), movie.getDescription(), movie.getIdMovie());
 
-            Log.d("id movie", String.valueOf(idMovie));
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         favoriteMovieViewModel = ViewModelProviders.of(this).get(FavoriteMovieViewModel.class);
-
-        dataCheck = favoriteMovieViewModel.getAllFavoriteMovieById(idMovie);
-
-        // kalau ga ada data yg terdeteksi
-        booleanApakahFavoriteMovieIniAda = dataCheck != null;
+        try {
+            dataFavoriteMovieById = favoriteMovieViewModel.getAllFavoriteMovieById(idMovie);
+            if (dataFavoriteMovieById == null) {
+                booleanCheckAvailabilityData = false;
+            } else {
+                booleanCheckAvailabilityData = true;
+            }
+        } catch (NullPointerException e) {
+            Log.d("ini bug nya", e.getMessage());
+        }
 
 
         btn_favorite_this_movie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (booleanApakahFavoriteMovieIniAda) { // true
-                    favoritkanMovieIni(true); // data nya ada, ketika di pencet di delete
-                    Toast.makeText(DetailMovieActivity.this, "movie ini tidak difavoritkan", Toast.LENGTH_SHORT).show();
+                if (booleanCheckAvailabilityData) { // true
+                    makeThisMovieFavorite(true); // data nya ada, ketika di pencet di delete
+                    Toast.makeText(DetailMovieActivity.this, R.string.remove_from_favorite, Toast.LENGTH_SHORT).show();
                 } else { // ga ada data nya, di insert dong
-                    favoritkanMovieIni(false);
-                    Toast.makeText(DetailMovieActivity.this, "movie ini difavoritkan", Toast.LENGTH_SHORT).show();
+                    makeThisMovieFavorite(false);
+                    Toast.makeText(DetailMovieActivity.this, R.string.add_from_favorite, Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
     }
 
-    private void favoritkanMovieIni(Boolean booleanApakahFavoriteMovieIniAda) {
-        if (!booleanApakahFavoriteMovieIniAda) { // false
+    private void makeThisMovieFavorite(Boolean booleanCheckAvailabilityData) {
+        if (!booleanCheckAvailabilityData) { // false
 //            insert
-            Log.d("insert data", "berhasil");
             favoriteMovieViewModel.insert(favoriteMovie);
+            this.booleanCheckAvailabilityData = true;
         } else { // true
             try {
+                Log.d("delete data", "berhasil kesini");
+//                this.favoriteMovieViewModel.delete(this.favoriteMovie);
                 favoriteMovieViewModel.deleteMovieById(idMovie);
-                dataCheck = null;
+                this.booleanCheckAvailabilityData = false;
             } catch (ExceptionInInitializerError e) {
                 e.printStackTrace();
             }
         }
     }
-
 }

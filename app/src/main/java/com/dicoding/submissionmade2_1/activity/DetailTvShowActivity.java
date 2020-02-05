@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -29,7 +30,6 @@ public class DetailTvShowActivity extends AppCompatActivity {
     Boolean booleanApakahFavoriteTvShowAda; // kalau true berarti delete, kalau false berarti insert
 
     FavoriteTvShow favoriteTvShow;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,37 +38,45 @@ public class DetailTvShowActivity extends AppCompatActivity {
         TextView tvTitle = findViewById(R.id.tv_title_received2),
                 tvDescription = findViewById(R.id.txt_description_received2);
         ImageView imgPoster = findViewById(R.id.img_received2);
+        Button btn_favorite_this_tvShow = findViewById(R.id.favorite_this_tv_show);
 
-        Button btn_favorite_this_movie = findViewById(R.id.favorite_this_tv_show);
 
         try {
-            TvShow tvshow = getIntent().getParcelableExtra(EXTRA_TvShow);
-            tvTitle.setText(tvshow.getTitle());
-            tvDescription.setText(tvshow.getDescription());
-            String url_image = "https://image.tmdb.org/t/p/w185" + tvshow.getPoster();
+            TvShow tvShow = getIntent().getParcelableExtra(EXTRA_TvShow);
+
+            tvTitle.setText(tvShow.getTitle());
+            tvDescription.setText(tvShow.getDescription());
+            String url_image = "https://image.tmdb.org/t/p/w185" + tvShow.getPoster();
             Glide.with(this)
                     .load(url_image)
                     .placeholder(R.color.colorAccent)
                     .dontAnimate()
                     .into(imgPoster);
-            idTvShow = tvshow.getIdTvShow();
+            idTvShow = tvShow.getIdTvShow();
 
-            favoriteTvShow = new FavoriteTvShow(tvshow.getPoster(), tvshow.getTitle(), tvshow.getDescription(), tvshow.getIdTvShow());
-
+            favoriteTvShow = new FavoriteTvShow(tvShow.getPoster(), tvShow.getTitle(), tvShow.getDescription(), tvShow.getIdTvShow());
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         favoriteTvShowViewModel = ViewModelProviders.of(this).get(FavoriteTvShowViewModel.class);
 
-        dataCheck = favoriteTvShowViewModel.getAllFavoriteTvShowById(idTvShow);
+        try {
+
+            dataCheck = favoriteTvShowViewModel.getAllFavoriteTvShowById(idTvShow);
+
+            if (dataCheck.getValue().isEmpty()) { // kalau ga ada data yg terdeteksi
+                booleanApakahFavoriteTvShowAda = false;
+            } else {
+                booleanApakahFavoriteTvShowAda = true;
+            }
 
 
-        // kalau ga ada data yg terdeteksi
-        booleanApakahFavoriteTvShowAda = dataCheck != null;
+        } catch (NullPointerException e) {
+            Log.d("ini bug nya", e.getMessage());
+        }
 
-
-        btn_favorite_this_movie.setOnClickListener(new View.OnClickListener() {
+        btn_favorite_this_tvShow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (booleanApakahFavoriteTvShowAda) { // true
@@ -80,16 +88,20 @@ public class DetailTvShowActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 
-    private void favoritkanTvShowIni(Boolean booleanApakahFavoriteTvShowAda) {
-        if (!booleanApakahFavoriteTvShowAda) { // false
+    private void favoritkanTvShowIni(Boolean booleanApakahFavoriteTvShowIniAda) {
+        if (!booleanApakahFavoriteTvShowIniAda) { // false
 //            insert
+            Log.d("insert data", "berhasil");
             favoriteTvShowViewModel.insert(favoriteTvShow);
+            this.booleanApakahFavoriteTvShowAda = true;
         } else { // true
             try {
+//                this.favoriteTvShowViewModel.delete(this.favoriteTvShow);
                 favoriteTvShowViewModel.deleteMovieById(idTvShow);
-                dataCheck = null;
+                this.booleanApakahFavoriteTvShowAda = false;
             } catch (ExceptionInInitializerError e) {
                 e.printStackTrace();
             }

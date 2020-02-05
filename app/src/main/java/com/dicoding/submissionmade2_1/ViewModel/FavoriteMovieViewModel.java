@@ -32,8 +32,7 @@ public class FavoriteMovieViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<FavoriteMovie>> getAllFavoriteMovieById(int idMovie) {
-        LiveData<List<FavoriteMovie>> data = repository.getFavoriteMovieById(idMovie);
-        return data;
+        return repository.getFavoriteMovieById(idMovie);
     }
 
     public LiveData<List<FavoriteMovie>> getAllFavoriteMovie() {

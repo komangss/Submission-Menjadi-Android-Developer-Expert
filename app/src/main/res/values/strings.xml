@@ -21,4 +21,6 @@
     <string name="favorite_tv_show">Favorite Tv Show</string>
 
     <string name="favorite_this_tv_show">I Like This Tv Show</string>
+    <string name="remove_from_favorite">remove from favorite</string>
+    <string name="add_from_favorite">Add To Favorite</string>
 </resources>
