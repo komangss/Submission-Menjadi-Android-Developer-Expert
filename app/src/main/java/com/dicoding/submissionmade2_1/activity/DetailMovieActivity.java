@@ -64,12 +64,17 @@ public class DetailMovieActivity extends AppCompatActivity {
 
         favoriteMovieViewModel = ViewModelProviders.of(this).get(FavoriteMovieViewModel.class);
         try {
-            dataFavoriteMovieById = favoriteMovieViewModel.getAllFavoriteMovieById(idMovie);
-            if (dataFavoriteMovieById == null) {
-                booleanCheckAvailabilityData = false;
-            } else {
-                booleanCheckAvailabilityData = true;
-            }
+            favoriteMovieViewModel.getAllFavoriteMovieById(idMovie).observe(this, new Observer<List<FavoriteMovie>>() {
+                @Override
+                public void onChanged(List<FavoriteMovie> favoriteMovies) {
+                    if (favoriteMovies == null) {
+                        booleanCheckAvailabilityData = false;
+                    } else {
+                        booleanCheckAvailabilityData = true;
+                    }
+                }
+            });
+
         } catch (NullPointerException e) {
             Log.d("ini bug nya", e.getMessage());
         }
