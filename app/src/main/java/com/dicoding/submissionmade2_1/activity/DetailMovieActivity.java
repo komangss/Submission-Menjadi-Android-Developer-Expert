@@ -63,11 +63,12 @@ public class DetailMovieActivity extends AppCompatActivity {
         }
 
         favoriteMovieViewModel = ViewModelProviders.of(this).get(FavoriteMovieViewModel.class);
+        booleanCheckAvailabilityData = false;
         try {
             favoriteMovieViewModel.getAllFavoriteMovieById(idMovie).observe(this, new Observer<List<FavoriteMovie>>() {
                 @Override
                 public void onChanged(List<FavoriteMovie> favoriteMovies) {
-                    if (favoriteMovies == null) {
+                    if (favoriteMovies == null || favoriteMovies.size() == 0) {
                         booleanCheckAvailabilityData = false;
                     } else {
                         booleanCheckAvailabilityData = true;
@@ -83,32 +84,23 @@ public class DetailMovieActivity extends AppCompatActivity {
         btn_favorite_this_movie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (booleanCheckAvailabilityData) { // true
-                    makeThisMovieFavorite(true); // data nya ada, ketika di pencet di delete
-                    Toast.makeText(DetailMovieActivity.this, R.string.remove_from_favorite, Toast.LENGTH_SHORT).show();
-                } else { // ga ada data nya, di insert dong
-                    makeThisMovieFavorite(false);
-                    Toast.makeText(DetailMovieActivity.this, R.string.add_from_favorite, Toast.LENGTH_SHORT).show();
-                }
+                makeThisMovieFavorite(booleanCheckAvailabilityData);
             }
         });
 
     }
 
     private void makeThisMovieFavorite(Boolean booleanCheckAvailabilityData) {
-        if (!booleanCheckAvailabilityData) { // false
+        if (booleanCheckAvailabilityData) { // true // kalo ada berarti di delete
+            favoriteMovieViewModel.deleteMovieById(idMovie);
+            Toast.makeText(DetailMovieActivity.this, R.string.remove_from_favorite, Toast.LENGTH_SHORT).show();
+            this.booleanCheckAvailabilityData = false;
 //            insert
-            favoriteMovieViewModel.insert(favoriteMovie);
-            this.booleanCheckAvailabilityData = true;
-        } else { // true
-            try {
-                Log.d("delete data", "berhasil kesini");
+        } else { // false // kalau ga ada berarti di insert
 //                this.favoriteMovieViewModel.delete(this.favoriteMovie);
-                favoriteMovieViewModel.deleteMovieById(idMovie);
-                this.booleanCheckAvailabilityData = false;
-            } catch (ExceptionInInitializerError e) {
-                e.printStackTrace();
-            }
+            favoriteMovieViewModel.insert(favoriteMovie);
+            Toast.makeText(DetailMovieActivity.this, R.string.add_from_favorite, Toast.LENGTH_SHORT).show();
+            this.booleanCheckAvailabilityData = true;
         }
     }
 }
