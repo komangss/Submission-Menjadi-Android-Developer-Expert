@@ -14,7 +14,7 @@ import java.util.List;
 public class FavoriteTvShowRepository {
     private FavoriteTvShowDao favoriteTvShowDao;
     private LiveData<List<FavoriteTvShow>> allFavoriteTvShows;
-    protected static LiveData<List<FavoriteTvShow>> dataFavoriteMovieById;
+    private static LiveData<List<FavoriteTvShow>> dataFavoriteMovieById;
 
 
     public FavoriteTvShowRepository(Application application) {
@@ -25,8 +25,8 @@ public class FavoriteTvShowRepository {
 
 
     //    database operation method
-    public void insert(FavoriteTvShow movie) {
-        new InsertFavoriteTvShowAsyncTask(favoriteTvShowDao).execute(movie);
+    public void insert(FavoriteTvShow tvShow) {
+        new InsertFavoriteTvShowAsyncTask(favoriteTvShowDao).execute(tvShow);
     }
 
     private static class InsertFavoriteTvShowAsyncTask extends AsyncTask<FavoriteTvShow, Void, Void> {
@@ -37,14 +37,14 @@ public class FavoriteTvShowRepository {
         }
 
         @Override
-        protected Void doInBackground(FavoriteTvShow... movies) {
-            favoriteTvShowDao.insert(movies[0]);
+        protected Void doInBackground(FavoriteTvShow... tvShows) {
+            favoriteTvShowDao.insert(tvShows[0]);
             return null;
         }
     }
 
-    public void delete(FavoriteTvShow movie) {
-        new DeleteFavoriteTvShowAsyncTask(favoriteTvShowDao).execute(movie);
+    public void delete(FavoriteTvShow tvShow) {
+        new DeleteFavoriteTvShowAsyncTask(favoriteTvShowDao).execute(tvShow);
     }
 
     private static class DeleteFavoriteTvShowAsyncTask extends AsyncTask<FavoriteTvShow, Void, Void> {
@@ -55,8 +55,8 @@ public class FavoriteTvShowRepository {
         }
 
         @Override
-        protected Void doInBackground(FavoriteTvShow... movies) {
-            favoriteTvShowDao.delete(movies[0]);
+        protected Void doInBackground(FavoriteTvShow... tvShow) {
+            favoriteTvShowDao.delete(tvShow[0]);
             return null;
         }
     }
@@ -66,34 +66,19 @@ public class FavoriteTvShowRepository {
         return allFavoriteTvShows;
     }
 
-    public LiveData<List<FavoriteTvShow>> getFavoriteTvShowById(int id_movie) {
-        new GetFavoriteTvShowByIdAsyncTask(favoriteTvShowDao).execute(id_movie);
+    public LiveData<List<FavoriteTvShow>> getFavoriteTvShowById(int idTvShow) {
+        dataFavoriteMovieById = favoriteTvShowDao.getFavoriteTvShowById(idTvShow);
         return dataFavoriteMovieById;
     }
 
-    private static class GetFavoriteTvShowByIdAsyncTask extends AsyncTask<Integer, Void, Void> {
-        FavoriteTvShowDao favoriteTvShowDao;
-
-        public GetFavoriteTvShowByIdAsyncTask(FavoriteTvShowDao favoriteTvShowDao) {
-            this.favoriteTvShowDao = favoriteTvShowDao;
-        }
-
-
-        @Override
-        protected Void doInBackground(Integer... integers) {
-            FavoriteTvShowRepository.dataFavoriteMovieById = favoriteTvShowDao.getFavoriteTvShowById(integers[0]);
-            return null;
-        }
-    }
-
-    public void deleteByMovieId(int id_movie) {
-        new DeleteByMovieIdAsyncTask(favoriteTvShowDao).execute(id_movie);
+    public void deleteByMovieId(int idTvShow) {
+        new DeleteByMovieIdAsyncTask(favoriteTvShowDao).execute(idTvShow);
     }
 
     private static class DeleteByMovieIdAsyncTask extends AsyncTask<Integer, Void, Void> {
         FavoriteTvShowDao favoriteTvShowDao;
 
-        public DeleteByMovieIdAsyncTask(FavoriteTvShowDao favoriteTvShowDao) {
+        DeleteByMovieIdAsyncTask(FavoriteTvShowDao favoriteTvShowDao) {
             this.favoriteTvShowDao = favoriteTvShowDao;
         }
 

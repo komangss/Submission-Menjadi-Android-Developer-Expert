@@ -46,6 +46,7 @@ public class TvShow implements Parcelable {
         parcel.writeString(this.poster);
         parcel.writeString(this.title);
         parcel.writeString(this.description);
+        parcel.writeInt(this.idTvShow);
     }
 
     public TvShow(JSONObject object) {
@@ -53,10 +54,12 @@ public class TvShow implements Parcelable {
             String title = object.getString("name");
             String description = object.getString("overview");
             String poster_path = object.getString("poster_path");
+            int idTvShow = object.getInt("id");
 
             this.title = title;
             this.description = description;
             this.poster = poster_path;
+            this.idTvShow = idTvShow;
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,7 +70,9 @@ public class TvShow implements Parcelable {
         poster = in.readString();
         title = in.readString();
         description = in.readString();
+        idTvShow = in.readInt();
     }
+
 
     public static final Creator<TvShow> CREATOR = new Creator<TvShow>() {
         @Override

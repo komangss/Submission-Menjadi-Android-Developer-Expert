@@ -2,7 +2,6 @@ package com.dicoding.submissionmade2_1.Repository;
 
 import android.app.Application;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -15,7 +14,7 @@ import java.util.List;
 public class FavoriteMovieRepository {
     private FavoriteMovieDao favoriteMovieDao;
     private LiveData<List<FavoriteMovie>> allFavoriteMovies;
-    protected static LiveData<List<FavoriteMovie>> favoriteMovieById;
+    protected static LiveData<List<FavoriteMovie>> dataFavoriteMovieById;
 
 
     public FavoriteMovieRepository(Application application) {
@@ -68,8 +67,8 @@ public class FavoriteMovieRepository {
     }
 
     public LiveData<List<FavoriteMovie>> getFavoriteMovieById(int id_movie) {
-        favoriteMovieById = favoriteMovieDao.getFavoriteMovieById(id_movie);
-        return favoriteMovieById;
+        dataFavoriteMovieById = favoriteMovieDao.getFavoriteMovieById(id_movie);
+        return dataFavoriteMovieById;
     }
 
     public void deleteByMovieId(int id_movie) {

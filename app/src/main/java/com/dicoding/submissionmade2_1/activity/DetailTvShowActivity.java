@@ -1,21 +1,20 @@
 package com.dicoding.submissionmade2_1.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.bumptech.glide.Glide;
 import com.dicoding.submissionmade2_1.Item.FavoriteTvShow;
-import com.dicoding.submissionmade2_1.R;
 import com.dicoding.submissionmade2_1.Item.TvShow;
+import com.dicoding.submissionmade2_1.R;
 import com.dicoding.submissionmade2_1.ViewModel.FavoriteTvShowViewModel;
 
 import java.util.List;
@@ -23,13 +22,12 @@ import java.util.List;
 public class DetailTvShowActivity extends AppCompatActivity {
 
     public static final String EXTRA_TvShow = "extra_tvshow";
-
     FavoriteTvShowViewModel favoriteTvShowViewModel;
     int idTvShow;
-    LiveData<List<FavoriteTvShow>> dataCheck;
-    Boolean booleanApakahFavoriteTvShowAda; // kalau true berarti delete, kalau false berarti insert
-
+    Boolean booleanCheckAvailabilityData; // kalau true berarti delete, kalau false berarti insert
     FavoriteTvShow favoriteTvShow;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,52 +58,43 @@ public class DetailTvShowActivity extends AppCompatActivity {
         }
 
         favoriteTvShowViewModel = ViewModelProviders.of(this).get(FavoriteTvShowViewModel.class);
-
+        booleanCheckAvailabilityData = false;
         try {
+            favoriteTvShowViewModel.getAllFavoriteTvShowById(idTvShow).observe(this, new Observer<List<FavoriteTvShow>>() {
+                @Override
+                public void onChanged(List<FavoriteTvShow> favoriteTvShows) {
+                    if (favoriteTvShows.size() == 0) {
+                        booleanCheckAvailabilityData = false;
+                    } else {
+                        booleanCheckAvailabilityData = true;
+                    }
+                }
+            });
+        } catch (Exception ignored) {
 
-            dataCheck = favoriteTvShowViewModel.getAllFavoriteTvShowById(idTvShow);
-
-            if (dataCheck.getValue().isEmpty()) { // kalau ga ada data yg terdeteksi
-                booleanApakahFavoriteTvShowAda = false;
-            } else {
-                booleanApakahFavoriteTvShowAda = true;
-            }
-
-
-        } catch (NullPointerException e) {
-            Log.d("ini bug nya", e.getMessage());
         }
+
 
         btn_favorite_this_tvShow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (booleanApakahFavoriteTvShowAda) { // true
-                    favoritkanTvShowIni(true); // data nya ada, ketika di pencet di delete
-                    Toast.makeText(DetailTvShowActivity.this, "tvShow ini tidak difavoritkan", Toast.LENGTH_SHORT).show();
-                } else { // ga ada data nya, di insert dong
-                    favoritkanTvShowIni(false);
-                    Toast.makeText(DetailTvShowActivity.this, "tvShow ini difavoritkan", Toast.LENGTH_SHORT).show();
-                }
+                makeThisTvShowFavourite(booleanCheckAvailabilityData);
             }
         });
 
     }
 
-    private void favoritkanTvShowIni(Boolean booleanApakahFavoriteTvShowIniAda) {
-        if (!booleanApakahFavoriteTvShowIniAda) { // false
+    private void makeThisTvShowFavourite(Boolean booleanCheckAvailabilityData) {
+        if (booleanCheckAvailabilityData) { // true // kalo ada berarti di delete
+            favoriteTvShowViewModel.deleteMovieById(idTvShow);
+            Toast.makeText(DetailTvShowActivity.this, R.string.remove_from_favorite, Toast.LENGTH_SHORT).show();
+            this.booleanCheckAvailabilityData = false;
 //            insert
-            Log.d("insert data", "berhasil");
+        } else { // false // kalau ga ada berarti di insert
             favoriteTvShowViewModel.insert(favoriteTvShow);
-            this.booleanApakahFavoriteTvShowAda = true;
-        } else { // true
-            try {
-//                this.favoriteTvShowViewModel.delete(this.favoriteTvShow);
-                favoriteTvShowViewModel.deleteMovieById(idTvShow);
-                this.booleanApakahFavoriteTvShowAda = false;
-            } catch (ExceptionInInitializerError e) {
-                e.printStackTrace();
-            }
+            Toast.makeText(DetailTvShowActivity.this, R.string.add_from_favorite, Toast.LENGTH_SHORT).show();
+            this.booleanCheckAvailabilityData = true;
         }
     }
-
 }
+
