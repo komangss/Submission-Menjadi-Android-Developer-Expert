@@ -41,8 +41,6 @@ public class DetailMovieActivity extends AppCompatActivity {
         ImageView imgPoster = findViewById(R.id.img_received);
         Button btn_favorite_this_movie = findViewById(R.id.favorite_this_movie);
 
-        LiveData<List<FavoriteMovie>> dataFavoriteMovieById;
-
         try {
             Movie movie = getIntent().getParcelableExtra(EXTRA_MOVIE);
 
@@ -68,7 +66,7 @@ public class DetailMovieActivity extends AppCompatActivity {
             favoriteMovieViewModel.getAllFavoriteMovieById(idMovie).observe(this, new Observer<List<FavoriteMovie>>() {
                 @Override
                 public void onChanged(List<FavoriteMovie> favoriteMovies) {
-                    if (favoriteMovies == null || favoriteMovies.size() == 0) {
+                    if (favoriteMovies.size() == 0) {
                         booleanCheckAvailabilityData = false;
                     } else {
                         booleanCheckAvailabilityData = true;
@@ -80,7 +78,6 @@ public class DetailMovieActivity extends AppCompatActivity {
             Log.d("ini bug nya", e.getMessage());
         }
 
-
         btn_favorite_this_movie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,7 +86,6 @@ public class DetailMovieActivity extends AppCompatActivity {
         });
 
     }
-
     private void makeThisMovieFavorite(Boolean booleanCheckAvailabilityData) {
         if (booleanCheckAvailabilityData) { // true // kalo ada berarti di delete
             favoriteMovieViewModel.deleteMovieById(idMovie);
@@ -97,7 +93,6 @@ public class DetailMovieActivity extends AppCompatActivity {
             this.booleanCheckAvailabilityData = false;
 //            insert
         } else { // false // kalau ga ada berarti di insert
-//                this.favoriteMovieViewModel.delete(this.favoriteMovie);
             favoriteMovieViewModel.insert(favoriteMovie);
             Toast.makeText(DetailMovieActivity.this, R.string.add_from_favorite, Toast.LENGTH_SHORT).show();
             this.booleanCheckAvailabilityData = true;

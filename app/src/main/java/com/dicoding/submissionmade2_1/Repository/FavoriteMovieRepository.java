@@ -68,23 +68,8 @@ public class FavoriteMovieRepository {
     }
 
     public LiveData<List<FavoriteMovie>> getFavoriteMovieById(int id_movie) {
-        new GetFavoriteMovieByIdAsyncTask(favoriteMovieDao).execute(id_movie);
+        favoriteMovieById = favoriteMovieDao.getFavoriteMovieById(id_movie);
         return favoriteMovieById;
-    }
-
-    private static class GetFavoriteMovieByIdAsyncTask extends AsyncTask<Integer, Void, Void> {
-        FavoriteMovieDao favoriteMovieDao;
-
-        GetFavoriteMovieByIdAsyncTask(FavoriteMovieDao favoriteMovieDao) {
-            this.favoriteMovieDao = favoriteMovieDao;
-        }
-
-
-        @Override
-        protected Void doInBackground(Integer... integers) {
-            FavoriteMovieRepository.favoriteMovieById = favoriteMovieDao.getFavoriteMovieById(integers[0]);
-            return null;
-        }
     }
 
     public void deleteByMovieId(int id_movie) {
