@@ -34,8 +34,6 @@ public class TvShow implements Parcelable {
         this.description = description;
     }
 
-//    untuk Stringent parcable
-
     @Override
     public int describeContents() {
         return 0;
@@ -66,7 +64,7 @@ public class TvShow implements Parcelable {
         }
     }
 
-    protected TvShow(Parcel in) {
+    private TvShow(Parcel in) {
         poster = in.readString();
         title = in.readString();
         description = in.readString();

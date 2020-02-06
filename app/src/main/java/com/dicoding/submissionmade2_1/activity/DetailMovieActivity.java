@@ -25,7 +25,7 @@ public class DetailMovieActivity extends AppCompatActivity {
     public static final String EXTRA_MOVIE = "extra_movie";
     private FavoriteMovieViewModel favoriteMovieViewModel;
     private int idMovie;
-    private Boolean booleanCheckAvailabilityData; // kalau true berarti delete, kalau false berarti insert
+    private Boolean booleanCheckAvailabilityData;
 
     private FavoriteMovie favoriteMovie;
 
@@ -65,11 +65,7 @@ public class DetailMovieActivity extends AppCompatActivity {
             favoriteMovieViewModel.getAllFavoriteMovieById(idMovie).observe(this, new Observer<List<FavoriteMovie>>() {
                 @Override
                 public void onChanged(List<FavoriteMovie> favoriteMovies) {
-                    if (favoriteMovies.size() == 0) {
-                        booleanCheckAvailabilityData = false;
-                    } else {
-                        booleanCheckAvailabilityData = true;
-                    }
+                    booleanCheckAvailabilityData = favoriteMovies.size() != 0;
                 }
             });
 
@@ -86,12 +82,11 @@ public class DetailMovieActivity extends AppCompatActivity {
 
     }
     private void makeThisMovieFavorite(Boolean booleanCheckAvailabilityData) {
-        if (booleanCheckAvailabilityData) { // true // kalo ada berarti di delete
+        if (booleanCheckAvailabilityData) { // true
             favoriteMovieViewModel.deleteMovieById(idMovie);
             Toast.makeText(DetailMovieActivity.this, R.string.remove_from_favorite, Toast.LENGTH_SHORT).show();
             this.booleanCheckAvailabilityData = false;
-//            insert
-        } else { // false // kalau ga ada berarti di insert
+        } else { // false
             favoriteMovieViewModel.insert(favoriteMovie);
             Toast.makeText(DetailMovieActivity.this, R.string.add_from_favorite, Toast.LENGTH_SHORT).show();
             this.booleanCheckAvailabilityData = true;

@@ -26,11 +26,6 @@ public class FavoriteTvShowViewModel extends AndroidViewModel {
         repository.insert(favoriteTvShow);
     }
 
-
-    public void delete(FavoriteTvShow favoriteTvShow) {
-        repository.delete(favoriteTvShow);
-    }
-
     public LiveData<List<FavoriteTvShow>> getAllFavoriteTvShowById(int idMovie) {
         return repository.getFavoriteTvShowById(idMovie);
     }

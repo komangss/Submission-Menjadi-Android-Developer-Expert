@@ -21,11 +21,11 @@ import java.util.List;
 
 public class DetailTvShowActivity extends AppCompatActivity {
 
-    public static final String EXTRA_TvShow = "extra_tvshow";
-    FavoriteTvShowViewModel favoriteTvShowViewModel;
-    int idTvShow;
-    Boolean booleanCheckAvailabilityData; // kalau true berarti delete, kalau false berarti insert
-    FavoriteTvShow favoriteTvShow;
+    public static final String EXTRA_TvShow = "extra_tv_show";
+    private FavoriteTvShowViewModel favoriteTvShowViewModel;
+    private int idTvShow;
+    private Boolean booleanCheckAvailabilityData;
+    private FavoriteTvShow favoriteTvShow;
 
 
     @Override
@@ -63,11 +63,7 @@ public class DetailTvShowActivity extends AppCompatActivity {
             favoriteTvShowViewModel.getAllFavoriteTvShowById(idTvShow).observe(this, new Observer<List<FavoriteTvShow>>() {
                 @Override
                 public void onChanged(List<FavoriteTvShow> favoriteTvShows) {
-                    if (favoriteTvShows.size() == 0) {
-                        booleanCheckAvailabilityData = false;
-                    } else {
-                        booleanCheckAvailabilityData = true;
-                    }
+                    booleanCheckAvailabilityData = favoriteTvShows.size() != 0;
                 }
             });
         } catch (Exception ignored) {
@@ -85,12 +81,11 @@ public class DetailTvShowActivity extends AppCompatActivity {
     }
 
     private void makeThisTvShowFavourite(Boolean booleanCheckAvailabilityData) {
-        if (booleanCheckAvailabilityData) { // true // kalo ada berarti di delete
+        if (booleanCheckAvailabilityData) {
             favoriteTvShowViewModel.deleteMovieById(idTvShow);
             Toast.makeText(DetailTvShowActivity.this, R.string.remove_from_favorite, Toast.LENGTH_SHORT).show();
             this.booleanCheckAvailabilityData = false;
-//            insert
-        } else { // false // kalau ga ada berarti di insert
+        } else {
             favoriteTvShowViewModel.insert(favoriteTvShow);
             Toast.makeText(DetailTvShowActivity.this, R.string.add_from_favorite, Toast.LENGTH_SHORT).show();
             this.booleanCheckAvailabilityData = true;

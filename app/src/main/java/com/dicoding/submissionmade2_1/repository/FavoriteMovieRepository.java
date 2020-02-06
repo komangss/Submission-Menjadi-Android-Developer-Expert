@@ -22,7 +22,6 @@ public class FavoriteMovieRepository {
         allFavoriteMovies = favoriteMovieDao.getAllFavoriteMovie();
     }
 
-
     //    database operation method
     public void insert(FavoriteMovie movie) {
         new InsertFavoriteMovieAsyncTask(favoriteMovieDao).execute(movie);
@@ -42,32 +41,12 @@ public class FavoriteMovieRepository {
         }
     }
 
-    public void delete(FavoriteMovie movie) {
-        new DeleteFavoriteMovieAsyncTask(favoriteMovieDao).execute(movie);
-    }
-
-    private static class DeleteFavoriteMovieAsyncTask extends AsyncTask<FavoriteMovie, Void, Void> {
-        private FavoriteMovieDao favoriteMovieDao;
-
-        private DeleteFavoriteMovieAsyncTask(FavoriteMovieDao favoriteMovieDao) {
-            this.favoriteMovieDao = favoriteMovieDao;
-        }
-
-        @Override
-        protected Void doInBackground(FavoriteMovie... movies) {
-            favoriteMovieDao.delete(movies[0]);
-            return null;
-        }
-    }
-
-
     public LiveData<List<FavoriteMovie>> getAllFavoriteMovies() {
         return allFavoriteMovies;
     }
 
     public LiveData<List<FavoriteMovie>> getFavoriteMovieById(int id_movie) {
-        LiveData<List<FavoriteMovie>> dataFavoriteMovieById = favoriteMovieDao.getFavoriteMovieById(id_movie);
-        return dataFavoriteMovieById;
+        return favoriteMovieDao.getFavoriteMovieById(id_movie);
     }
 
     public void deleteByMovieId(int id_movie) {

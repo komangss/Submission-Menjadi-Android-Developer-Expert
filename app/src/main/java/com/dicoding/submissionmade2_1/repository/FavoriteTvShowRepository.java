@@ -14,7 +14,6 @@ import java.util.List;
 public class FavoriteTvShowRepository {
     private FavoriteTvShowDao favoriteTvShowDao;
     private LiveData<List<FavoriteTvShow>> allFavoriteTvShows;
-    private static LiveData<List<FavoriteTvShow>> dataFavoriteMovieById;
 
 
     public FavoriteTvShowRepository(Application application) {
@@ -43,31 +42,12 @@ public class FavoriteTvShowRepository {
         }
     }
 
-    public void delete(FavoriteTvShow tvShow) {
-        new DeleteFavoriteTvShowAsyncTask(favoriteTvShowDao).execute(tvShow);
-    }
-
-    private static class DeleteFavoriteTvShowAsyncTask extends AsyncTask<FavoriteTvShow, Void, Void> {
-        private FavoriteTvShowDao favoriteTvShowDao;
-
-        private DeleteFavoriteTvShowAsyncTask(FavoriteTvShowDao favoriteTvShowDao) {
-            this.favoriteTvShowDao = favoriteTvShowDao;
-        }
-
-        @Override
-        protected Void doInBackground(FavoriteTvShow... tvShow) {
-            favoriteTvShowDao.delete(tvShow[0]);
-            return null;
-        }
-    }
-
-
     public LiveData<List<FavoriteTvShow>> getAllFavoriteTvShows() {
         return allFavoriteTvShows;
     }
 
     public LiveData<List<FavoriteTvShow>> getFavoriteTvShowById(int idTvShow) {
-        dataFavoriteMovieById = favoriteTvShowDao.getFavoriteTvShowById(idTvShow);
+        LiveData<List<FavoriteTvShow>> dataFavoriteMovieById = favoriteTvShowDao.getFavoriteTvShowById(idTvShow);
         return dataFavoriteMovieById;
     }
 

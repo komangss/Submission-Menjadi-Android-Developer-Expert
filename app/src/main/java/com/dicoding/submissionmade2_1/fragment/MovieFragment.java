@@ -40,17 +40,14 @@ public class MovieFragment extends Fragment {
 
         progressBar = view.findViewById(R.id.progressBar);
 
-//        buat adapter
         adapter = new ListMovieAdapter();
         RecyclerView recyclerView = view.findViewById(R.id.rv_movies);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView.setAdapter(adapter);
 
-
-//        buat view model
         MovieViewModel moviesViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
         moviesViewModel.getMovie().observe(this, getMovie);
-        moviesViewModel.setMovie("EXTRA_MOVIE");
+        moviesViewModel.setMovie();
 
         showLoading(true);
 

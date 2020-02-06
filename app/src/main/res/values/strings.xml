@@ -13,7 +13,6 @@
     <string name="title_movie_received" translatable="false">title_movie_received</string>
     <string name="description" translatable="false">description</string>
     <string name="title_movie_received2" translatable="false">title_movie_received2</string>
-    <string name="txt_favorite">Favorite</string>
 
 
     <string name="favorite_this_movie">I Like This Movie</string>

@@ -39,17 +39,14 @@ public class TvShowFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_tv_show, container, false);
         progressBar = view.findViewById(R.id.progressBar2);
 
-//        buat adapter
         adapter = new ListTvShowAdapter();
         RecyclerView recyclerView = view.findViewById(R.id.rv_tv_show);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView.setAdapter(adapter);
 
-
-//        buat view model
         TvShowViewModel tvShowViewModel = ViewModelProviders.of(this).get(TvShowViewModel.class);
         tvShowViewModel.getTvShow().observe(this, getTvShow);
-        tvShowViewModel.setTvShow("EXTRA_MOVIE");
+        tvShowViewModel.setTvShow();
 
         showLoading(true);
 
