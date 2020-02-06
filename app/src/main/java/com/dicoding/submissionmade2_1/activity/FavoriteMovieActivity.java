@@ -1,15 +1,17 @@
 package com.dicoding.submissionmade2_1.activity;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.os.Bundle;
-import com.dicoding.submissionmade2_1.Adapter.FavoriteMovieAdapter;
-import com.dicoding.submissionmade2_1.Item.FavoriteMovie;
+
 import com.dicoding.submissionmade2_1.R;
-import com.dicoding.submissionmade2_1.ViewModel.FavoriteMovieViewModel;
+import com.dicoding.submissionmade2_1.adapter.FavoriteMovieAdapter;
+import com.dicoding.submissionmade2_1.item.FavoriteMovie;
+import com.dicoding.submissionmade2_1.viewModel.FavoriteMovieViewModel;
 
 import java.util.List;
 

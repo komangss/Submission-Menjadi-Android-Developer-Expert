@@ -1,17 +1,17 @@
 package com.dicoding.submissionmade2_1.activity;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Bundle;
-
-import com.dicoding.submissionmade2_1.Adapter.FavoriteTvShowAdapter;
-import com.dicoding.submissionmade2_1.Item.FavoriteTvShow;
 import com.dicoding.submissionmade2_1.R;
-import com.dicoding.submissionmade2_1.ViewModel.FavoriteTvShowViewModel;
+import com.dicoding.submissionmade2_1.adapter.FavoriteTvShowAdapter;
+import com.dicoding.submissionmade2_1.item.FavoriteTvShow;
+import com.dicoding.submissionmade2_1.viewModel.FavoriteTvShowViewModel;
 
 import java.util.List;
 

@@ -1,10 +1,5 @@
 package com.dicoding.submissionmade2_1.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,11 +8,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.bumptech.glide.Glide;
-import com.dicoding.submissionmade2_1.Item.FavoriteMovie;
-import com.dicoding.submissionmade2_1.Item.Movie;
 import com.dicoding.submissionmade2_1.R;
-import com.dicoding.submissionmade2_1.ViewModel.FavoriteMovieViewModel;
+import com.dicoding.submissionmade2_1.item.FavoriteMovie;
+import com.dicoding.submissionmade2_1.item.Movie;
+import com.dicoding.submissionmade2_1.viewModel.FavoriteMovieViewModel;
 
 import java.util.List;
 

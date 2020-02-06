@@ -12,10 +12,10 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.Glide;
-import com.dicoding.submissionmade2_1.Item.FavoriteTvShow;
-import com.dicoding.submissionmade2_1.Item.TvShow;
 import com.dicoding.submissionmade2_1.R;
-import com.dicoding.submissionmade2_1.ViewModel.FavoriteTvShowViewModel;
+import com.dicoding.submissionmade2_1.item.FavoriteTvShow;
+import com.dicoding.submissionmade2_1.item.TvShow;
+import com.dicoding.submissionmade2_1.viewModel.FavoriteTvShowViewModel;
 
 import java.util.List;
 

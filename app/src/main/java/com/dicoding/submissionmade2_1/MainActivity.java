@@ -6,15 +6,14 @@ import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.dicoding.submissionmade2_1.Fragment.FavoriteFragment;
-import com.dicoding.submissionmade2_1.Fragment.MovieFragment;
-import com.dicoding.submissionmade2_1.Fragment.TvShowFragment;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+
+import com.dicoding.submissionmade2_1.fragment.FavoriteFragment;
+import com.dicoding.submissionmade2_1.fragment.MovieFragment;
+import com.dicoding.submissionmade2_1.fragment.TvShowFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
