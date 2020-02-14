@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,13 +18,16 @@ import com.dicoding.submissionmade2_1.activity.DetailMovieActivity;
 import com.dicoding.submissionmade2_1.item.Movie;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class ListMovieAdapter extends RecyclerView.Adapter<ListMovieAdapter.ListViewHolder> {
+public class ListMovieAdapter extends RecyclerView.Adapter<ListMovieAdapter.ListViewHolder> implements Filterable {
+    private ArrayList<Movie> listMovieFull = new ArrayList<>();
     private ArrayList<Movie> listMovie = new ArrayList<>();
 
     public void setData(ArrayList<Movie> items) {
         listMovie.clear();
         listMovie.addAll(items);
+        listMovieFull = new ArrayList<>(items);
         notifyDataSetChanged();
     }
 
@@ -43,6 +48,39 @@ public class ListMovieAdapter extends RecyclerView.Adapter<ListMovieAdapter.List
         return listMovie.size();
     }
 
+    @Override
+    public Filter getFilter() {
+        return movieFilter;
+    }
+
+    private Filter movieFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Movie> filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(listMovieFull);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for (Movie item : listMovieFull) {
+                    if (item.getTitle().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            listMovie.clear();
+            listMovie.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
 
     class ListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView imgPhoto;
