@@ -1,6 +1,7 @@
 package com.dicoding.submissionMade.adapter;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +13,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.bumptech.glide.Glide;
 import com.dicoding.submissionMade.R;
 import com.dicoding.submissionMade.activity.DetailMovieActivity;
 import com.dicoding.submissionMade.item.Movie;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,22 +65,44 @@ public class ListMovieAdapter extends RecyclerView.Adapter<ListMovieAdapter.List
     private Filter movieFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            List<Movie> filteredList = new ArrayList<>();
+            final ArrayList<Movie> filteredList = new ArrayList<>();
 
             if (constraint == null || constraint.length() == 0) {
                 filteredList.addAll(listMovieFull);
             } else {
-                String filterPattern = constraint.toString().toLowerCase().trim();
+                String filterPattern = constraint.toString().trim();
 
-                for (Movie item : listMovieFull) {
-                    if (item.getTitle().toLowerCase().contains(filterPattern)) {
-                        filteredList.add(item);
-                    }
-                }
+                final String API_KEY = "d9c1d6e1b7d10d2ad0ac0c8e7e9abb81";
+                String url = "https://api.themoviedb.org/3/search/movie?api_key=" + API_KEY + "&language=en-US&query=" + filterPattern;
+
+                AndroidNetworking.get(url)
+                        .setPriority(Priority.LOW)
+                        .build()
+                        .getAsJSONObject(new JSONObjectRequestListener() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    JSONArray list = response.getJSONArray("results");
+                                    for (int i = 0; i < list.length(); i++) {
+                                        JSONObject movie = list.getJSONObject(i);
+                                        Movie movieItems = new Movie(movie);
+                                        filteredList.add(movieItems);
+                                    }
+                                } catch (JSONException e) {
+                                    Log.d("Exception", e.getMessage());
+                                }
+                            }
+
+                            @Override
+                            public void onError(ANError anError) {
+                                Log.d("onFailure", anError.getMessage());
+                            }
+                        });
             }
             FilterResults results = new FilterResults();
             results.values = filteredList;
             return results;
+
         }
 
         @Override
@@ -121,4 +152,6 @@ public class ListMovieAdapter extends RecyclerView.Adapter<ListMovieAdapter.List
                     .into(imgPhoto);
         }
     }
+
+
 }

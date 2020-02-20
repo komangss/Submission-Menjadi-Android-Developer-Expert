@@ -56,7 +56,16 @@ public class MovieFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         moviesViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
-        moviesViewModel.getMovie().observe(getViewLifecycleOwner(), getMovie);
+        moviesViewModel.getMovie().observe(getViewLifecycleOwner(), new Observer<ArrayList<Movie>>() {
+            @Override
+            public void onChanged(ArrayList<Movie> movies) {
+                if (movies != null) {
+                    adapter.setData(movies);
+                }
+
+                showLoading(false);
+            }
+        });
         moviesViewModel.setMovie();
 
         showLoading(true);
