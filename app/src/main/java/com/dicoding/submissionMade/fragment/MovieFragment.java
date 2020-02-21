@@ -3,6 +3,7 @@ package com.dicoding.submissionMade.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +17,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.dicoding.submissionMade.R;
 import com.dicoding.submissionMade.adapter.ListMovieAdapter;
 import com.dicoding.submissionMade.item.Movie;
 import com.dicoding.submissionMade.viewModel.MovieViewModel;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -74,7 +83,40 @@ public class MovieFragment extends Fragment {
         searchViewMovie.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                adapter.getFilter().filter(query);
+
+                showLoading(true);
+
+                final ArrayList<Movie> filteredList = new ArrayList<>();
+                final String API_KEY = "d9c1d6e1b7d10d2ad0ac0c8e7e9abb81";
+                String url = "https://api.themoviedb.org/3/search/movie?api_key=" + API_KEY + "&language=en-US&query=" + query;
+
+                AndroidNetworking.get(url)
+                        .setPriority(Priority.LOW)
+                        .build()
+                        .getAsJSONObject(new JSONObjectRequestListener() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    JSONArray list = response.getJSONArray("results");
+                                    for (int i = 0; i < list.length(); i++) {
+                                        JSONObject movie = list.getJSONObject(i);
+                                        Movie movieItems = new Movie(movie);
+                                        filteredList.add(movieItems);
+                                    }
+                                    adapter.setData(filteredList);
+                                } catch (JSONException e) {
+                                    Log.d("Exception", e.getMessage());
+                                }
+                            }
+
+                            @Override
+                            public void onError(ANError anError) {
+                                Log.d("onFailure", anError.getMessage());
+                            }
+                        });
+
+                showLoading(false);
+
                 return false;
             }
 
@@ -125,18 +167,6 @@ public class MovieFragment extends Fragment {
             }
         });
     }
-
-    private Observer<ArrayList<Movie>> getMovie = new Observer<ArrayList<Movie>>() {
-        @Override
-        public void onChanged(ArrayList<Movie> movies) {
-            if (movies != null) {
-                adapter.setData(movies);
-            }
-
-            showLoading(false);
-
-        }
-    };
 
     private void showLoading(Boolean state) {
         if (state) {
