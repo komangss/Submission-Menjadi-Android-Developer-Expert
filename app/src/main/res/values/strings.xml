@@ -22,4 +22,7 @@
     <string name="favorite_this_tv_show">I Like This Tv Show</string>
     <string name="remove_from_favorite">remove from favorite</string>
     <string name="add_from_favorite">Add To Favorite</string>
+    <string name="appwidget_text">Movie Banner</string>
+    <string name="empty_text">NO DATA</string>
+    <string name="add_widget">Add widget</string>
 </resources>

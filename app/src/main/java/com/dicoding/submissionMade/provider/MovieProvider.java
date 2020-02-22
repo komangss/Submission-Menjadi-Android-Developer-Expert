@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +25,7 @@ public class MovieProvider extends ContentProvider {
     private static final int MOVIE_DIR = 1;
     public static final String TV_TABLE = FavoriteTvShow.TABLE_NAME;
     private static final int TV_DIR = 2;
+    public static Cursor cursor;
 
     private static final UriMatcher MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
 
@@ -54,9 +56,17 @@ public class MovieProvider extends ContentProvider {
             FavoriteMovieDao favoriteMovieDao = FavoriteMovieDatabase.getInstance(context).favoriteMovieDao();
             FavoriteTvShowDao favoriteTvShowDao = FavoriteTvShowDatabase.getInstance(context).favoriteTvShowDao();
 
-            final Cursor cursor;
 
             if (code == MOVIE_DIR) { // kalau movie code nya 1
+//                new GetAllFavoriteMovieProviderAsyncTask(favoriteMovieDao).execute();
+//                AsyncTask.execute(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        // Get Data
+//                        cursor = FavoriteMovieDatabase.getInstance(context).favoriteMovieDao().getAllFavoriteMovieProvider();
+//                    }
+//
+//                });
                 cursor = favoriteMovieDao.getAllFavoriteMovieProvider();
             } else { // 2
                 cursor = favoriteTvShowDao.getAllFavoriteTvShowProvider();
@@ -88,5 +98,19 @@ public class MovieProvider extends ContentProvider {
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
         return 0;
+    }
+
+    private static class GetAllFavoriteMovieProviderAsyncTask extends AsyncTask<Void, Void, Void> {
+        private FavoriteMovieDao favoriteMovieDao;
+
+        GetAllFavoriteMovieProviderAsyncTask(FavoriteMovieDao favoriteMovieDao) {
+            this.favoriteMovieDao = favoriteMovieDao;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            MovieProvider.cursor = favoriteMovieDao.getAllFavoriteMovieProvider();
+            return null;
+        }
     }
 }
