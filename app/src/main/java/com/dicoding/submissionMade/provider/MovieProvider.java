@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -53,29 +52,30 @@ public class MovieProvider extends ContentProvider {
                 return null;
             }
 
-            FavoriteMovieDao favoriteMovieDao = FavoriteMovieDatabase.getInstance(context).favoriteMovieDao();
-            FavoriteTvShowDao favoriteTvShowDao = FavoriteTvShowDatabase.getInstance(context).favoriteTvShowDao();
+            final FavoriteMovieDao favoriteMovieDao = FavoriteMovieDatabase.getInstance(context).favoriteMovieDao();
+            final FavoriteTvShowDao favoriteTvShowDao = FavoriteTvShowDatabase.getInstance(context).favoriteTvShowDao();
 
+            Thread getMovie = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    if (code == MOVIE_DIR) {
+                        cursor = favoriteMovieDao.getAllFavoriteMovieProvider();
+                    } else {
+                        cursor = favoriteTvShowDao.getAllFavoriteTvShowProvider();
+                    }
+                }
+            });
 
-            if (code == MOVIE_DIR) { // kalau movie code nya 1
-//                new GetAllFavoriteMovieProviderAsyncTask(favoriteMovieDao).execute();
-//                AsyncTask.execute(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        // Get Data
-//                        cursor = FavoriteMovieDatabase.getInstance(context).favoriteMovieDao().getAllFavoriteMovieProvider();
-//                    }
-//
-//                });
-                cursor = favoriteMovieDao.getAllFavoriteMovieProvider();
-            } else { // 2
-                cursor = favoriteTvShowDao.getAllFavoriteTvShowProvider();
+            getMovie.start();
+            try {
+                getMovie.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
             return cursor;
         } else {
-            throw new IllegalArgumentException("Unknown URI: " + uri);
+            throw new IllegalArgumentException("Unknown URI : " + uri);
         }
-
     }
 
     @Nullable
@@ -100,17 +100,4 @@ public class MovieProvider extends ContentProvider {
         return 0;
     }
 
-    private static class GetAllFavoriteMovieProviderAsyncTask extends AsyncTask<Void, Void, Void> {
-        private FavoriteMovieDao favoriteMovieDao;
-
-        GetAllFavoriteMovieProviderAsyncTask(FavoriteMovieDao favoriteMovieDao) {
-            this.favoriteMovieDao = favoriteMovieDao;
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            MovieProvider.cursor = favoriteMovieDao.getAllFavoriteMovieProvider();
-            return null;
-        }
-    }
 }

@@ -21,17 +21,109 @@ import java.util.concurrent.ExecutionException;
 public class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     private ArrayList<FavoriteMovie> movies = new ArrayList<FavoriteMovie>();
-    private final Context context;
+    //    private final Context context;
     private Uri CONTENT_URI = Uri.parse("content://com.dicoding.submissionMade/favorite_movie_table");
 
 
-    StackRemoteViewsFactory(Context context) {
-        this.context = context;
+    private Context mContext;
+
+    private Cursor movieCursor;
+
+    StackRemoteViewsFactory(Context applicationContext) {
+        mContext = applicationContext;
+    }
+
+    @SuppressLint("Recycle")
+    private void initData() {
+        movies.clear();
+
+        movieCursor = mContext.getContentResolver().query(
+                CONTENT_URI,
+                null,
+                null,
+                null,
+                null
+        );
+
+        if (movieCursor != null) {
+            movies.addAll(mapCursorToArrayList(movieCursor));
+//            movieCursor.close();
+        }
+
     }
 
     @Override
     public void onCreate() {
         initData();
+    }
+
+
+    @Override
+    public RemoteViews getViewAt(int i) {
+        FavoriteMovie item = movies.get(i);
+        RemoteViews rv = new RemoteViews(mContext.getPackageName(), R.layout.favourite_widget_item);
+
+        Bitmap bitmap = null;
+        try {
+            bitmap = Glide.with(mContext)
+                    .asBitmap()
+                    .load("https://image.tmdb.org/t/p/" + "w342" + item.getPoster())
+                    .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                    .get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        rv.setImageViewBitmap(R.id.imageView, bitmap);
+
+        Bundle extras = new Bundle();
+        extras.putInt(ImagesBannerWidget.EXTRA_ITEM, i);
+        Intent fillInIntent = new Intent();
+        fillInIntent.putExtras(extras);
+
+        rv.setOnClickFillInIntent(R.id.imageView, fillInIntent);
+        return rv;
+    }
+
+
+    private FavoriteMovie getItem(int position) {
+        if (!movieCursor.moveToPosition(position)) {
+            throw new IllegalStateException("Position invalid!");
+        }
+        ArrayList<FavoriteMovie> movies = mapCursorToArrayList(movieCursor);
+        FavoriteMovie movie = movies.get(0);
+        return new FavoriteMovie(movie.getPoster(), movie.getTitle(), movie.getDescription(), movie.getId_movie());
+    }
+
+    @Override
+    public int getCount() {
+        return movieCursor.getCount();
+    }
+
+    @Override
+    public RemoteViews getLoadingView() {
+        return null;
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return 1;
+    }
+
+    @Override
+    public long getItemId(int i) {
+        Long p;
+        if (!movies.isEmpty()) {
+            p = (long) movies.get(0).getId();
+        } else {
+            p = (long) movies.get(i).getId();
+        }
+        return p;
+    }
+
+    @Override
+    public boolean hasStableIds() {
+        return false;
     }
 
     @Override
@@ -46,72 +138,6 @@ public class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFa
 
     }
 
-    @Override
-    public int getCount() {
-        return movies.size();
-    }
-
-    @Override
-    public RemoteViews getViewAt(int position) {
-        FavoriteMovie movie = movies.get(position);
-        RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget_item);
-
-        Bitmap bitmap = null;
-        try {
-            bitmap = Glide.with(context)
-                    .asBitmap()
-                    .load("https://image.tmdb.org/t/p/" + "w500" + movie.getPoster())
-                    .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                    .get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-
-
-        rv.setImageViewBitmap(R.id.imageView, bitmap);
-        Bundle extras = new Bundle();
-        extras.putInt(ImagesBannerWidget.EXTRA_ITEM, position);
-        Intent fillInIntent = new Intent();
-        fillInIntent.putExtras(extras);
-        rv.setOnClickFillInIntent(R.id.imageView, fillInIntent);
-        return rv;
-    }
-
-    @Override
-    public RemoteViews getLoadingView() {
-        return null;
-    }
-
-    @Override
-    public int getViewTypeCount() {
-        return 1;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        long id;
-        if (!movies.isEmpty()) id = (long) movies.get(0).getId();
-        else {
-            id = (long) position;
-        }
-        return id;
-    }
-
-    @Override
-    public boolean hasStableIds() {
-        return false;
-    }
-
-    @SuppressLint("Recycle")
-    private void initData() {
-        movies.clear();
-        Cursor cur = context.getContentResolver().query(CONTENT_URI, null, null, null, null);
-
-        if (cur != null) {
-            movies.addAll(mapCursorToArrayList(cur));
-            cur.close();
-        }
-    }
 
     private ArrayList<FavoriteMovie> mapCursorToArrayList(Cursor cur) {
         ArrayList<FavoriteMovie> result = new ArrayList<>();
