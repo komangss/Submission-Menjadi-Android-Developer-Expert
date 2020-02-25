@@ -36,4 +36,5 @@
     <string name="summary_release_reminder">Kamu akan mendapatkan info film baru hari ini setiap jam 08 : 00 Pagi</string>
     <string name="release_reminder">Pengingat Film Baru</string>
     <string name="key_lang">key_lang</string>
+    <string name="notification_settings">pengaturan notifikasi</string>
 </resources>

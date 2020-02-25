@@ -42,4 +42,5 @@
     <string name="summary_release_reminder">You will receive daily movie release info every 8 AM</string>
     <string name="release_reminder">New Movie Reminder</string>
     <string name="key_lang">key_lang</string>
+    <string name="notification_settings">notification settings</string>
 </resources>

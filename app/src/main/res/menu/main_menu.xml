@@ -8,6 +8,6 @@
 
     <item
         android:id="@+id/notification_settings"
-        android:title="notification settings"
+        android:title="@string/notification_settings"
         app:showAsAction="never" />
 </menu>
