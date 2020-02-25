@@ -19,7 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
+        <activity android:name=".activity.NotificationSettingActivity"></activity>
         <activity android:name=".activity.FavoriteTvShowActivity" />
         <activity android:name=".activity.FavoriteMovieActivity" />
         <activity android:name=".activity.DetailTvShowActivity" />
@@ -42,8 +42,7 @@
             </intent-filter>
         </activity>
 
-
-        <receiver android:name="com.dicoding.submissionMade.ImagesBannerWidget">
+        <receiver android:name=".ImagesBannerWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -56,6 +55,15 @@
         <service
             android:name=".StackWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <receiver
+            android:name=".MovieDailyReceiver"
+            android:enabled="true"
+            android:exported="false" />
+        <receiver
+            android:name=".MovieUpcomingReceiver"
+            android:enabled="true"
+            android:exported="false" />
     </application>
 
 </manifest>

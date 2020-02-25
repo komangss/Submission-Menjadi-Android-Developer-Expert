@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.dicoding.submissionMade.activity.NotificationSettingActivity;
 import com.dicoding.submissionMade.fragment.FavoriteFragment;
 import com.dicoding.submissionMade.fragment.MovieFragment;
 import com.dicoding.submissionMade.fragment.TvShowFragment;
@@ -77,6 +78,9 @@ public class MainActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.action_change_settings) {
             Intent mIntent = new Intent(Settings.ACTION_LOCALE_SETTINGS);
             startActivity(mIntent);
+        } else {
+            Intent notifSettingIntent = new Intent(this, NotificationSettingActivity.class);
+            startActivity(notifSettingIntent);
         }
         return super.onOptionsItemSelected(item);
     }
