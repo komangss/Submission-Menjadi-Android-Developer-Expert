@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layoutDirection="rtl"
-                app:queryHint="search movie..." />
+                app:queryHint="@string/search_movie" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_movies"

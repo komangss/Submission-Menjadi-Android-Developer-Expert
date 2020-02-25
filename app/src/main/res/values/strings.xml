@@ -26,6 +26,9 @@
     <string name="empty_text">NO DATA</string>
     <string name="add_widget">Add widget</string>
 
+    <string name="search_movie">search movie…</string>
+    <string name="search_tv_show">search tv show…</string>
+
 
     <string name="judul_daily">Whats New?</string>
     <string name="desk_daily">Check out latest movies!</string>

@@ -16,6 +16,11 @@
     <string name="remove_from_favorite">Dihapus Dari Favorit</string>
     <string name="add_from_favorite">Ditambahkan Dari Favorit</string>
 
+
+    <string name="search_movie">cari film…</string>
+    <string name="search_tv_show">cari acara tv…</string>
+
+
     <string name="appwidget_text">Banner Film</string>
     <string name="empty_text">Tidak Ada Data</string>
     <string name="add_widget">Tambah Widget</string>
