@@ -15,16 +15,13 @@
     <string name="title_movie_received2" translatable="false">title_movie_received2</string>
 
 
-    <string name="favorite_this_movie">I Like This Movie</string>
     <string name="favorite_movie">Favorite Movie</string>
     <string name="favorite_tv_show">Favorite Tv Show</string>
 
-    <string name="favorite_this_tv_show">I Like This Tv Show</string>
     <string name="remove_from_favorite">remove from favorite</string>
     <string name="add_from_favorite">Add To Favorite</string>
     <string name="appwidget_text">Movie Banner</string>
     <string name="empty_text">NO DATA</string>
-    <string name="add_widget">Add widget</string>
 
     <string name="search_movie">search movie…</string>
     <string name="search_tv_show">search tv show…</string>
@@ -41,6 +38,11 @@
     <string name="key_release_reminder">key_release_reminder</string>
     <string name="summary_release_reminder">You will receive daily movie release info every 8 AM</string>
     <string name="release_reminder">New Movie Reminder</string>
-    <string name="key_lang">key_lang</string>
     <string name="notification_settings">notification settings</string>
+    <string name="title_detail">Title :</string>
+    <string name="description_detail">Description :</string>
+    <string name="poster_movie_detail">Poster Movie :</string>
+    <string name="favorite_button_detail"><![CDATA[Favorite Button ->]]></string>
+
+
 </resources>

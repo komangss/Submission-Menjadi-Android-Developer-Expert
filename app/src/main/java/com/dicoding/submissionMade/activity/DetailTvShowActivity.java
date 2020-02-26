@@ -40,8 +40,8 @@ public class DetailTvShowActivity extends AppCompatActivity {
                 tvDescription = findViewById(R.id.txt_description_received2);
         ImageView imgPoster = findViewById(R.id.img_received2);
 
-        final LikeButton likeButton = findViewById(R.id.favorite_tvshow_button);
-        parent_view = findViewById(R.id.constraint_layout2);
+        final LikeButton likeButton = findViewById(R.id.favorite_button);
+        parent_view = findViewById(R.id.coordinator_layout2);
 
         try {
             TvShow tvShow = getIntent().getParcelableExtra(EXTRA_TvShow);
