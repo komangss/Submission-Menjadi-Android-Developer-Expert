@@ -10,6 +10,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.dicoding.submissionMade.BuildConfig;
 import com.dicoding.submissionMade.item.Movie;
 
 import org.json.JSONArray;
@@ -19,7 +20,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class MovieViewModel extends ViewModel {
-    private static final String API_KEY = "d9c1d6e1b7d10d2ad0ac0c8e7e9abb81";
+    private static final String API_KEY = BuildConfig.TMDB_API_KEY;
     private MutableLiveData<ArrayList<Movie>> listMovie = new MutableLiveData<>();
 
     public void setMovie() {

@@ -21,6 +21,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.dicoding.submissionMade.BuildConfig;
 import com.dicoding.submissionMade.R;
 import com.dicoding.submissionMade.adapter.ListMovieAdapter;
 import com.dicoding.submissionMade.item.Movie;
@@ -31,7 +32,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 
 /**
@@ -80,7 +80,7 @@ public class MovieFragment extends Fragment {
 
         showLoading(true);
 
-        searchViewMovie = view.findViewById(R.id.search_movie); // initiate a search view
+        searchViewMovie = view.findViewById(R.id.search_movie); // inititate a search view
         searchViewMovie.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -88,7 +88,7 @@ public class MovieFragment extends Fragment {
                 showLoading(true);
 
                 final ArrayList<Movie> filteredList = new ArrayList<>();
-                final String API_KEY = "d9c1d6e1b7d10d2ad0ac0c8e7e9abb81";
+                final String API_KEY = BuildConfig.TMDB_API_KEY;
                 String url = "https://api.themoviedb.org/3/search/movie?api_key=" + API_KEY + "&language=en-US&query=" + query;
 
                 AndroidNetworking.get(url)
@@ -106,13 +106,13 @@ public class MovieFragment extends Fragment {
                                     }
                                     adapter.setData(filteredList);
                                 } catch (JSONException e) {
-                                    Log.d("Exception", Objects.requireNonNull(e.getMessage()));
+                                    Log.d("Exception", e.getMessage());
                                 }
                             }
 
                             @Override
                             public void onError(ANError anError) {
-                                Log.d("onFailure", Objects.requireNonNull(anError.getMessage()));
+                                Log.d("onFailure", anError.getMessage());
                             }
                         });
 

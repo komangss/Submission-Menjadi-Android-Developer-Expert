@@ -10,6 +10,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.dicoding.submissionMade.BuildConfig;
 import com.dicoding.submissionMade.item.TvShow;
 
 import org.json.JSONArray;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 
 public class TvShowViewModel extends ViewModel {
 
-    private static final String API_KEY = "d9c1d6e1b7d10d2ad0ac0c8e7e9abb81";
+    private static final String API_KEY = BuildConfig.TMDB_API_KEY;
     private MutableLiveData<ArrayList<TvShow>> listTvShow = new MutableLiveData<>();
 
     public void setTvShow() {

@@ -68,7 +68,7 @@ public class ViewLoadingDotsBounce extends LinearLayout {
         img = new ImageView[OBJECT_SIZE];
         circle.setShape(GradientDrawable.OVAL);
         circle.setColor(color);
-        circle.setSize(150, 150);
+        circle.setSize(200, 200);
 
         LayoutParams layoutParams2 = new LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
         layoutParams2.weight = 1;
