@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -47,12 +48,30 @@ public class ListTvShowAdapter extends RecyclerView.Adapter<ListTvShowAdapter.Li
     class ListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView imgPhoto;
         TextView tvName, tvFrom;
+        Button btnToDetailTvShow;
 
-        ListViewHolder(View itemView) {
+        ListViewHolder(final View itemView) {
             super(itemView);
             imgPhoto = itemView.findViewById(R.id.img_item_photo2);
             tvName = itemView.findViewById(R.id.tv_item_name2);
             tvFrom = itemView.findViewById(R.id.tv_item_from2);
+            btnToDetailTvShow = itemView.findViewById(R.id.btn_tvshow);
+
+            btnToDetailTvShow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    TvShow tvshow = listTvShow.get(position);
+
+                    tvshow.setTitle(tvshow.getTitle());
+                    tvshow.setDescription(tvshow.getDescription());
+                    tvshow.setPoster(tvshow.getPoster());
+
+                    Intent showTvShowActivityIntent = new Intent(itemView.getContext(), DetailTvShowActivity.class);
+                    showTvShowActivityIntent.putExtra(DetailTvShowActivity.EXTRA_TvShow, tvshow);
+                    v.getContext().startActivity(showTvShowActivityIntent);
+                }
+            });
             itemView.setOnClickListener(this);
         }
 
