@@ -1,13 +1,13 @@
 package com.dicoding.submissionMade.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -16,6 +16,9 @@ import com.dicoding.submissionMade.R;
 import com.dicoding.submissionMade.item.FavoriteTvShow;
 import com.dicoding.submissionMade.item.TvShow;
 import com.dicoding.submissionMade.viewModel.FavoriteTvShowViewModel;
+import com.google.android.material.snackbar.Snackbar;
+import com.like.LikeButton;
+import com.like.OnLikeListener;
 
 import java.util.List;
 
@@ -24,8 +27,8 @@ public class DetailTvShowActivity extends AppCompatActivity {
     public static final String EXTRA_TvShow = "extra_tv_show";
     private FavoriteTvShowViewModel favoriteTvShowViewModel;
     private int idTvShow;
-    private Boolean booleanCheckAvailabilityData;
     private FavoriteTvShow favoriteTvShow;
+    private ConstraintLayout parent_view;
 
 
     @Override
@@ -36,8 +39,9 @@ public class DetailTvShowActivity extends AppCompatActivity {
         TextView tvTitle = findViewById(R.id.tv_title_received2),
                 tvDescription = findViewById(R.id.txt_description_received2);
         ImageView imgPoster = findViewById(R.id.img_received2);
-        Button btn_favorite_this_tvShow = findViewById(R.id.favorite_this_tv_show);
 
+        final LikeButton likeButton = findViewById(R.id.favorite_tvshow_button);
+        parent_view = findViewById(R.id.constraint_layout2);
 
         try {
             TvShow tvShow = getIntent().getParcelableExtra(EXTRA_TvShow);
@@ -58,38 +62,66 @@ public class DetailTvShowActivity extends AppCompatActivity {
         }
 
         favoriteTvShowViewModel = new ViewModelProvider(this).get(FavoriteTvShowViewModel.class);
-        booleanCheckAvailabilityData = false;
         try {
             favoriteTvShowViewModel.getAllFavoriteTvShowById(idTvShow).observe(this, new Observer<List<FavoriteTvShow>>() {
                 @Override
                 public void onChanged(List<FavoriteTvShow> favoriteTvShows) {
-                    booleanCheckAvailabilityData = favoriteTvShows.size() != 0;
+                    if (favoriteTvShows.size() == 0) {
+                        likeButton.setLiked(false);
+                    } else {
+                        likeButton.setLiked(true);
+                    }
                 }
             });
         } catch (Exception ignored) {
 
         }
 
-
-        btn_favorite_this_tvShow.setOnClickListener(new View.OnClickListener() {
+        likeButton.setOnLikeListener(new OnLikeListener() {
             @Override
-            public void onClick(View v) {
-                makeThisTvShowFavourite(booleanCheckAvailabilityData);
+            public void liked(LikeButton likeButton) {
+                favoriteTvShowViewModel.insert(favoriteTvShow);
+                snackBarIconSuccess();
+            }
+
+            @Override
+            public void unLiked(LikeButton likeButton) {
+                favoriteTvShowViewModel.deleteMovieById(idTvShow);
+                snackBarIconError();
             }
         });
-
     }
 
-    private void makeThisTvShowFavourite(Boolean booleanCheckAvailabilityData) {
-        if (booleanCheckAvailabilityData) {
-            favoriteTvShowViewModel.deleteMovieById(idTvShow);
-            Toast.makeText(DetailTvShowActivity.this, R.string.remove_from_favorite, Toast.LENGTH_SHORT).show();
-            this.booleanCheckAvailabilityData = false;
-        } else {
-            favoriteTvShowViewModel.insert(favoriteTvShow);
-            Toast.makeText(DetailTvShowActivity.this, R.string.add_from_favorite, Toast.LENGTH_SHORT).show();
-            this.booleanCheckAvailabilityData = true;
-        }
+    private void snackBarIconError() {
+        final Snackbar snackbar = Snackbar.make(parent_view, "", Snackbar.LENGTH_SHORT);
+        //inflate view
+        View custom_view = getLayoutInflater().inflate(R.layout.snackbar_icon_text, null);
+
+        snackbar.getView().setBackgroundColor(Color.TRANSPARENT);
+        Snackbar.SnackbarLayout snackBarView = (Snackbar.SnackbarLayout) snackbar.getView();
+        snackBarView.setPadding(0, 0, 0, 0);
+
+        ((TextView) custom_view.findViewById(R.id.message)).setText(R.string.remove_from_favorite);
+        ((ImageView) custom_view.findViewById(R.id.icon)).setImageResource(R.drawable.ic_close);
+        (custom_view.findViewById(R.id.parent_view)).setBackgroundColor(getResources().getColor(R.color.red_600));
+        snackBarView.addView(custom_view, 0);
+        snackbar.show();
+    }
+
+    private void snackBarIconSuccess() {
+        final Snackbar snackbar = Snackbar.make(parent_view, "", Snackbar.LENGTH_SHORT);
+        //inflate view
+        View custom_view = getLayoutInflater().inflate(R.layout.snackbar_icon_text, null);
+
+        snackbar.getView().setBackgroundColor(Color.TRANSPARENT);
+        Snackbar.SnackbarLayout snackBarView = (Snackbar.SnackbarLayout) snackbar.getView();
+        snackBarView.setPadding(0, 0, 0, 0);
+
+        ((TextView) custom_view.findViewById(R.id.message)).setText(R.string.add_from_favorite);
+        ((ImageView) custom_view.findViewById(R.id.icon)).setImageResource(R.drawable.ic_done);
+        (custom_view.findViewById(R.id.parent_view)).setBackgroundColor(getResources().getColor(R.color.green_500));
+        snackBarView.addView(custom_view, 0);
+        snackbar.show();
     }
 }
 

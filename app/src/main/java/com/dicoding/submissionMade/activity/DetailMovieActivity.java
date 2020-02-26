@@ -1,14 +1,14 @@
 package com.dicoding.submissionMade.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -17,17 +17,20 @@ import com.dicoding.submissionMade.R;
 import com.dicoding.submissionMade.item.FavoriteMovie;
 import com.dicoding.submissionMade.item.Movie;
 import com.dicoding.submissionMade.viewModel.FavoriteMovieViewModel;
+import com.google.android.material.snackbar.Snackbar;
+import com.like.LikeButton;
+import com.like.OnLikeListener;
 
 import java.util.List;
+import java.util.Objects;
 
 public class DetailMovieActivity extends AppCompatActivity {
 
     public static final String EXTRA_MOVIE = "extra_movie";
     private FavoriteMovieViewModel favoriteMovieViewModel;
     private int idMovie;
-    private Boolean booleanCheckAvailabilityData;
-
     private FavoriteMovie favoriteMovie;
+    private ConstraintLayout parent_view;
 
 
     @Override
@@ -38,7 +41,8 @@ public class DetailMovieActivity extends AppCompatActivity {
         TextView tvTitle = findViewById(R.id.tv_title_received),
                 tvDescription = findViewById(R.id.txt_description_received);
         ImageView imgPoster = findViewById(R.id.img_received);
-        Button btn_favorite_this_movie = findViewById(R.id.favorite_this_movie);
+        final LikeButton likeButton = findViewById(R.id.favorite_button);
+        parent_view = findViewById(R.id.coordinator_layout);
 
         try {
             Movie movie = getIntent().getParcelableExtra(EXTRA_MOVIE);
@@ -60,36 +64,68 @@ public class DetailMovieActivity extends AppCompatActivity {
         }
 
         favoriteMovieViewModel = new ViewModelProvider(this).get(FavoriteMovieViewModel.class);
-        booleanCheckAvailabilityData = false;
         try {
             favoriteMovieViewModel.getAllFavoriteMovieById(idMovie).observe(this, new Observer<List<FavoriteMovie>>() {
                 @Override
                 public void onChanged(List<FavoriteMovie> favoriteMovies) {
-                    booleanCheckAvailabilityData = favoriteMovies.size() != 0;
+                    if (favoriteMovies.size() == 0) {
+                        likeButton.setLiked(false);
+                    } else {
+                        likeButton.setLiked(true);
+                    }
                 }
             });
 
         } catch (NullPointerException e) {
-            Log.d("ini bug nya", e.getMessage());
+            Log.d("ini bug nya", Objects.requireNonNull(e.getMessage()));
         }
 
-        btn_favorite_this_movie.setOnClickListener(new View.OnClickListener() {
+        likeButton.setOnLikeListener(new OnLikeListener() {
             @Override
-            public void onClick(View v) {
-                makeThisMovieFavorite(booleanCheckAvailabilityData);
+            public void liked(LikeButton likeButton) {
+                favoriteMovieViewModel.insert(favoriteMovie);
+                snackBarIconSuccess();
+            }
+
+            @Override
+            public void unLiked(LikeButton likeButton) {
+                favoriteMovieViewModel.deleteMovieById(idMovie);
+                snackBarIconError();
             }
         });
 
     }
-    private void makeThisMovieFavorite(Boolean booleanCheckAvailabilityData) {
-        if (booleanCheckAvailabilityData) { // true
-            favoriteMovieViewModel.deleteMovieById(idMovie);
-            Toast.makeText(DetailMovieActivity.this, R.string.remove_from_favorite, Toast.LENGTH_SHORT).show();
-            this.booleanCheckAvailabilityData = false;
-        } else { // false
-            favoriteMovieViewModel.insert(favoriteMovie);
-            Toast.makeText(DetailMovieActivity.this, R.string.add_from_favorite, Toast.LENGTH_SHORT).show();
-            this.booleanCheckAvailabilityData = true;
-        }
+
+
+    private void snackBarIconError() {
+        final Snackbar snackbar = Snackbar.make(parent_view, "", Snackbar.LENGTH_SHORT);
+        //inflate view
+        View custom_view = getLayoutInflater().inflate(R.layout.snackbar_icon_text, null);
+
+        snackbar.getView().setBackgroundColor(Color.TRANSPARENT);
+        Snackbar.SnackbarLayout snackBarView = (Snackbar.SnackbarLayout) snackbar.getView();
+        snackBarView.setPadding(0, 0, 0, 0);
+
+        ((TextView) custom_view.findViewById(R.id.message)).setText(R.string.remove_from_favorite);
+        ((ImageView) custom_view.findViewById(R.id.icon)).setImageResource(R.drawable.ic_close);
+        (custom_view.findViewById(R.id.parent_view)).setBackgroundColor(getResources().getColor(R.color.red_600));
+        snackBarView.addView(custom_view, 0);
+        snackbar.show();
+    }
+
+    private void snackBarIconSuccess() {
+        final Snackbar snackbar = Snackbar.make(parent_view, "", Snackbar.LENGTH_SHORT);
+        //inflate view
+        View custom_view = getLayoutInflater().inflate(R.layout.snackbar_icon_text, null);
+
+        snackbar.getView().setBackgroundColor(Color.TRANSPARENT);
+        Snackbar.SnackbarLayout snackBarView = (Snackbar.SnackbarLayout) snackbar.getView();
+        snackBarView.setPadding(0, 0, 0, 0);
+
+        ((TextView) custom_view.findViewById(R.id.message)).setText(R.string.add_from_favorite);
+        ((ImageView) custom_view.findViewById(R.id.icon)).setImageResource(R.drawable.ic_done);
+        (custom_view.findViewById(R.id.parent_view)).setBackgroundColor(getResources().getColor(R.color.green_500));
+        snackBarView.addView(custom_view, 0);
+        snackbar.show();
     }
 }

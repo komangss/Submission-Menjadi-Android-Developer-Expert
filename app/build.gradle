@@ -51,5 +51,6 @@ dependencies {
     testImplementation "androidx.room:room-testing:$room_version"
 
     implementation 'com.agrawalsuneet.androidlibs:dotsloader:1.4.2'
+    implementation 'com.github.jd-alexander:LikeButton:0.2.3'
 
 }
