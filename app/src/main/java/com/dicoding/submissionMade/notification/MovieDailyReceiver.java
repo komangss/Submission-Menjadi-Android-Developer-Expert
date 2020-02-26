@@ -1,4 +1,4 @@
-package com.dicoding.submissionMade;
+package com.dicoding.submissionMade.notification;
 
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
@@ -15,6 +15,9 @@ import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
+
+import com.dicoding.submissionMade.MainActivity;
+import com.dicoding.submissionMade.R;
 
 import java.util.Calendar;
 

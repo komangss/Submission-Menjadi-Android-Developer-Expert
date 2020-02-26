@@ -36,12 +36,23 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/lyt_progress"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
         android:layout_gravity="center"
-        android:visibility="gone" />
+        android:layout_margin="16dp"
+        android:orientation="vertical">
+
+        <com.dicoding.submissionMade.widget.ViewLoadingDotsBounce
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@color/colorAccent" />
+
+    </LinearLayout>
+
 
 </FrameLayout>

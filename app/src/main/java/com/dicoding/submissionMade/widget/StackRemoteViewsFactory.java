@@ -1,4 +1,4 @@
-package com.dicoding.submissionMade;
+package com.dicoding.submissionMade.widget;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -13,6 +13,7 @@ import android.widget.RemoteViewsService;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
+import com.dicoding.submissionMade.R;
 import com.dicoding.submissionMade.item.FavoriteMovie;
 
 import java.util.ArrayList;

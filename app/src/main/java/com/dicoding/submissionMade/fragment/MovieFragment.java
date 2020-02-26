@@ -7,7 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
@@ -31,6 +31,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 /**
@@ -39,12 +40,12 @@ import java.util.ArrayList;
 public class MovieFragment extends Fragment {
 
     private ListMovieAdapter adapter;
-    private ProgressBar progressBar;
     private Context ctx;
     private RecyclerView recyclerView;
     private MovieViewModel moviesViewModel;
     private SearchView searchViewMovie;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private LinearLayout lyt_progress;
 
     public MovieFragment() {
         // Required empty public constructor
@@ -56,7 +57,8 @@ public class MovieFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_movie, container, false);
 
-        progressBar = view.findViewById(R.id.progressBar);
+//        layout for progress bounce
+        lyt_progress = view.findViewById(R.id.lyt_progress);
 
         adapter = new ListMovieAdapter();
         recyclerView = view.findViewById(R.id.rv_movies);
@@ -71,7 +73,6 @@ public class MovieFragment extends Fragment {
                 if (movies != null) {
                     adapter.setData(movies);
                 }
-
                 showLoading(false);
             }
         });
@@ -79,7 +80,7 @@ public class MovieFragment extends Fragment {
 
         showLoading(true);
 
-        searchViewMovie = view.findViewById(R.id.search_movie); // inititate a search view
+        searchViewMovie = view.findViewById(R.id.search_movie); // initiate a search view
         searchViewMovie.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -105,13 +106,13 @@ public class MovieFragment extends Fragment {
                                     }
                                     adapter.setData(filteredList);
                                 } catch (JSONException e) {
-                                    Log.d("Exception", e.getMessage());
+                                    Log.d("Exception", Objects.requireNonNull(e.getMessage()));
                                 }
                             }
 
                             @Override
                             public void onError(ANError anError) {
-                                Log.d("onFailure", anError.getMessage());
+                                Log.d("onFailure", Objects.requireNonNull(anError.getMessage()));
                             }
                         });
 
@@ -170,9 +171,10 @@ public class MovieFragment extends Fragment {
 
     private void showLoading(Boolean state) {
         if (state) {
-            progressBar.setVisibility(View.VISIBLE);
+            lyt_progress.setVisibility(View.VISIBLE);
+            lyt_progress.setAlpha(1.0f);
         } else {
-            progressBar.setVisibility(View.GONE);
+            lyt_progress.setVisibility(View.GONE);
         }
     }
 }

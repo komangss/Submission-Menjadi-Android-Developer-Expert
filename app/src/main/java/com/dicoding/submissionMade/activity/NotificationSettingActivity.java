@@ -12,10 +12,10 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.dicoding.submissionMade.MovieDailyReceiver;
-import com.dicoding.submissionMade.MovieUpcomingReceiver;
 import com.dicoding.submissionMade.R;
 import com.dicoding.submissionMade.item.Movie;
+import com.dicoding.submissionMade.notification.MovieDailyReceiver;
+import com.dicoding.submissionMade.notification.MovieUpcomingReceiver;
 
 import org.json.JSONArray;
 import org.json.JSONException;

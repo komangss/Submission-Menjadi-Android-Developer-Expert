@@ -7,7 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
@@ -31,6 +31,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 /**
@@ -39,12 +40,12 @@ import java.util.ArrayList;
 public class TvShowFragment extends Fragment {
 
     private ListTvShowAdapter adapter;
-    private ProgressBar progressBar;
     private Context ctx;
     private RecyclerView recyclerView;
     private TvShowViewModel tvShowViewModel;
     private SearchView searchViewTvShow;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private LinearLayout lyt_progress;
 
     public TvShowFragment() {
         // Required empty public constructor
@@ -55,7 +56,8 @@ public class TvShowFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tv_show, container, false);
-        progressBar = view.findViewById(R.id.progressBar2);
+
+        lyt_progress = view.findViewById(R.id.lyt_progress_tv_show);
 
         ctx = this.getContext();
 
@@ -95,13 +97,13 @@ public class TvShowFragment extends Fragment {
                                     }
                                     adapter.setData(filteredList);
                                 } catch (JSONException e) {
-                                    Log.d("Exception", e.getMessage());
+                                    Log.d("Exception", Objects.requireNonNull(e.getMessage()));
                                 }
                             }
 
                             @Override
                             public void onError(ANError anError) {
-                                Log.d("onFailure", anError.getMessage());
+                                Log.d("onFailure", Objects.requireNonNull(anError.getMessage()));
                             }
                         });
 
@@ -146,13 +148,13 @@ public class TvShowFragment extends Fragment {
 
     private void swipeProgress(final boolean show) {
         if (!show) {
-            swipeRefreshLayout.setRefreshing(show);
+            swipeRefreshLayout.setRefreshing(false);
             return;
         }
         swipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
-                swipeRefreshLayout.setRefreshing(show);
+                swipeRefreshLayout.setRefreshing(true);
             }
         });
     }
@@ -172,9 +174,10 @@ public class TvShowFragment extends Fragment {
 
     private void showLoading(Boolean state) {
         if (state) {
-            progressBar.setVisibility(View.VISIBLE);
+            lyt_progress.setVisibility(View.VISIBLE);
+            lyt_progress.setAlpha(1.0f);
         } else {
-            progressBar.setVisibility(View.GONE);
+            lyt_progress.setVisibility(View.GONE);
         }
     }
 }
