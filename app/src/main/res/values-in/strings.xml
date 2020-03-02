@@ -27,7 +27,7 @@
     <string name="today_release">Film Baru Dirilis</string>
 
     <string name="key_today_reminder">key_today_reminder</string>
-    <string name="summary_daily_reminder">Kamu akan mendapatkan pengingat setiap jam 00 : 07</string>
+    <string name="summary_daily_reminder">Kamu akan mendapatkan pengingat setiap jam 07 : 00 Pagi</string>
     <string name="daily_reminder">Pengingat Harian</string>
     <string name="key_release_reminder">key_release_reminder</string>
     <string name="summary_release_reminder">Kamu akan mendapatkan info film baru hari ini setiap jam 08 : 00 Pagi</string>
