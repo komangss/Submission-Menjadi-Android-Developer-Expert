@@ -21,6 +21,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.dicoding.submissionMade.BuildConfig;
 import com.dicoding.submissionMade.R;
 import com.dicoding.submissionMade.item.Movie;
 
@@ -29,16 +30,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class MovieUpcomingReceiver extends BroadcastReceiver {
 
     private static int mNotifId = 2000;
-    private static final String API_KEY = "d9c1d6e1b7d10d2ad0ac0c8e7e9abb81";
+    private static final String API_KEY = BuildConfig.TMDB_API_KEY;
 
     private void sendNotification(Context context, String title, String mDesc, int id) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(
@@ -104,26 +104,21 @@ public class MovieUpcomingReceiver extends BroadcastReceiver {
         Toast.makeText(context, "Upcoming Notif ON", Toast.LENGTH_SHORT).show();
     }
 
-
     @Override
     public void onReceive(Context context, Intent intent) {
-        List<Movie> movieList = getReleaseMovieToday("https://api.themoviedb.org/3/movie/upcoming?api_key=d9c1d6e1b7d10d2ad0ac0c8e7e9abb81&language=en-US");
-        if (movieList.size() > 0) {
-            for (Movie movie : movieList) {
-                int id = intent.getIntExtra("id", 0);
-                String mDesc = context.getString(R.string.today_release) + " " + movie.getTitle();
-                sendNotification(context, context.getString(R.string.app_name), mDesc, id);
-            }
-
-        }
-
-    }
-
-    public List<Movie> getReleaseMovieToday(String url) {
+        int id = intent.getIntExtra("id", 0);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         Date date = new Date();
         final String today = dateFormat.format(date);
-        final ArrayList<Movie> mNotifList = new ArrayList<>();
+
+        getReleaseMovieTodayThenSendNotif("https://api.themoviedb.org/3/movie/upcoming?api_key=" + API_KEY + "&primary_release_date.gte=" + today + "&primary_release_date.lte=" + today + "", context, id);
+
+//        Example
+        //        getReleaseMovieTodayThenSendNotif("https://api.themoviedb.org/3/discover/movie?api_key=d9c1d6e1b7d10d2ad0ac0c8e7e9abb81&primary_release_date.gte=2020-02-20&primary_release_date.lte=2020-02-20", context, id);
+
+    }
+
+    public void getReleaseMovieTodayThenSendNotif(String url, final Context ctx, final int notifId) {
 
         AndroidNetworking.get(url)
                 .setPriority(Priority.HIGH)
@@ -135,22 +130,19 @@ public class MovieUpcomingReceiver extends BroadcastReceiver {
                             JSONArray list = response.getJSONArray("results");
                             for (int i = 0; i < list.length(); i++) {
                                 JSONObject movie = list.getJSONObject(i);
-                                if (movie.getString("release_date").equals(today)) {
-                                    Movie movieItems = new Movie(movie);
-                                    mNotifList.add(movieItems);
-                                }
+                                Movie movieItems = new Movie(movie);
+                                sendNotification(ctx, ctx.getString(R.string.app_name), ctx.getString(R.string.today_release) + " " + movieItems.getTitle(), notifId);
                             }
                         } catch (JSONException e) {
-                            Log.d("Exception", e.getMessage());
+                            Log.d("Exception", Objects.requireNonNull(e.getMessage()));
                         }
                     }
 
                     @Override
                     public void onError(ANError anError) {
-                        Log.d("onFailure", anError.getMessage());
+                        Log.d("onFailure", Objects.requireNonNull(anError.getMessage()));
                     }
                 });
-        return mNotifList;
     }
 
     public void cancelAlarm(Context context) {
@@ -158,5 +150,4 @@ public class MovieUpcomingReceiver extends BroadcastReceiver {
         alarmManager.cancel(getPendingIntent(context));
         Toast.makeText(context, "Upcoming Notif OFF", Toast.LENGTH_SHORT).show();
     }
-
 }

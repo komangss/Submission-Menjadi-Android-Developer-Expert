@@ -19,13 +19,11 @@ import com.dicoding.submissionMade.item.Movie;
 import java.util.ArrayList;
 
 public class ListMovieAdapter extends RecyclerView.Adapter<ListMovieAdapter.ListViewHolder> {
-    private ArrayList<Movie> listMovieFull = new ArrayList<>();
     private ArrayList<Movie> listMovie = new ArrayList<>();
 
     public void setData(ArrayList<Movie> items) {
         listMovie.clear();
         listMovie.addAll(items);
-        listMovieFull = new ArrayList<>(items);
         notifyDataSetChanged();
     }
 
@@ -103,6 +101,4 @@ public class ListMovieAdapter extends RecyclerView.Adapter<ListMovieAdapter.List
                     .into(imgPhoto);
         }
     }
-
-
 }
