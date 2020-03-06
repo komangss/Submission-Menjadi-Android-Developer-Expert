@@ -69,7 +69,6 @@ public class TvShowFragment extends Fragment {
 
         tvShowViewModel = new ViewModelProvider(this).get(TvShowViewModel.class);
         tvShowViewModel.getTvShow().observe(getViewLifecycleOwner(), getTvShow);
-        tvShowViewModel.setTvShow();
 
         showLoading(true);
 
@@ -137,7 +136,7 @@ public class TvShowFragment extends Fragment {
             public void run() {
                 recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
                 recyclerView.setAdapter(adapter);
-                tvShowViewModel.setTvShow();
+                tvShowViewModel.getTvShow();
 
                 searchViewTvShow.setQuery("", false);
                 searchViewTvShow.clearFocus();
@@ -163,9 +162,9 @@ public class TvShowFragment extends Fragment {
 
     private Observer<ArrayList<TvShow>> getTvShow = new Observer<ArrayList<TvShow>>() {
         @Override
-        public void onChanged(ArrayList<TvShow> movies) {
-            if (movies != null) {
-                adapter.setData(movies);
+        public void onChanged(ArrayList<TvShow> tvShows) {
+            if (tvShows != null) {
+                adapter.setData(tvShows);
             }
 
             showLoading(false);

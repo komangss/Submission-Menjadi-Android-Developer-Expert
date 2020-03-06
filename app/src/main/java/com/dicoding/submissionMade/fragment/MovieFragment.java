@@ -3,12 +3,12 @@ package com.dicoding.submissionMade.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -17,19 +17,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.common.Priority;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.dicoding.submissionMade.BuildConfig;
 import com.dicoding.submissionMade.R;
 import com.dicoding.submissionMade.adapter.ListMovieAdapter;
 import com.dicoding.submissionMade.item.Movie;
 import com.dicoding.submissionMade.viewModel.MovieViewModel;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -59,6 +50,7 @@ public class MovieFragment extends Fragment {
 
 //        layout for progress bounce
         lyt_progress = view.findViewById(R.id.lyt_progress);
+        showLoading(true);
 
         adapter = new ListMovieAdapter();
         recyclerView = view.findViewById(R.id.rv_movies);
@@ -67,18 +59,7 @@ public class MovieFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         moviesViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
-        moviesViewModel.getMovie().observe(getViewLifecycleOwner(), new Observer<ArrayList<Movie>>() {
-            @Override
-            public void onChanged(ArrayList<Movie> movies) {
-                if (movies != null) {
-                    adapter.setData(movies);
-                }
-                showLoading(false);
-            }
-        });
-        moviesViewModel.setMovie();
-
-        showLoading(true);
+        moviesViewModel.getMovie().observe(getViewLifecycleOwner(), getMovies);
 
         searchViewMovie = view.findViewById(R.id.search_movie); // inititate a search view
         searchViewMovie.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -87,34 +68,8 @@ public class MovieFragment extends Fragment {
 
                 showLoading(true);
 
-                final ArrayList<Movie> filteredList = new ArrayList<>();
-                final String API_KEY = BuildConfig.TMDB_API_KEY;
-                String url = "https://api.themoviedb.org/3/search/movie?api_key=" + API_KEY + "&language=en-US&query=" + query;
-
-                AndroidNetworking.get(url)
-                        .setPriority(Priority.LOW)
-                        .build()
-                        .getAsJSONObject(new JSONObjectRequestListener() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                try {
-                                    JSONArray list = response.getJSONArray("results");
-                                    for (int i = 0; i < list.length(); i++) {
-                                        JSONObject movie = list.getJSONObject(i);
-                                        Movie movieItems = new Movie(movie);
-                                        filteredList.add(movieItems);
-                                    }
-                                    adapter.setData(filteredList);
-                                } catch (JSONException e) {
-                                    Log.d("Exception", e.getMessage());
-                                }
-                            }
-
-                            @Override
-                            public void onError(ANError anError) {
-                                Log.d("onFailure", anError.getMessage());
-                            }
-                        });
+                ArrayList<Movie> result = moviesViewModel.getResultSearch(query);
+                adapter.setData(result);
 
                 showLoading(false);
 
@@ -139,6 +94,11 @@ public class MovieFragment extends Fragment {
 
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
     private void pullAndRefresh() {
         swipeProgress(true);
         new Handler().postDelayed(new Runnable() {
@@ -146,7 +106,7 @@ public class MovieFragment extends Fragment {
             public void run() {
                 recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
                 recyclerView.setAdapter(adapter);
-                moviesViewModel.setMovie();
+                moviesViewModel.getMovie();
 
                 searchViewMovie.setQuery("", false);
                 searchViewMovie.clearFocus();
@@ -177,4 +137,16 @@ public class MovieFragment extends Fragment {
             lyt_progress.setVisibility(View.GONE);
         }
     }
+
+    private Observer<ArrayList<Movie>> getMovies = new Observer<ArrayList<Movie>>() {
+        @Override
+        public void onChanged(ArrayList<Movie> movies) {
+            if (movies != null) {
+                adapter.setData(movies);
+            }
+
+            showLoading(false);
+
+        }
+    };
 }

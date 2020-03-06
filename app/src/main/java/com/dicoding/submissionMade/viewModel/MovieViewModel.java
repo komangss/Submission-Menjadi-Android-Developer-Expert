@@ -12,6 +12,7 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.dicoding.submissionMade.BuildConfig;
 import com.dicoding.submissionMade.item.Movie;
+import com.dicoding.submissionMade.repository.MovieRepository;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,14 +21,27 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class MovieViewModel extends ViewModel {
+    final ArrayList<Movie> filteredList = new ArrayList<>();
+    private MovieRepository movieRepository = new MovieRepository();
     private static final String API_KEY = BuildConfig.TMDB_API_KEY;
-    private MutableLiveData<ArrayList<Movie>> listMovie = new MutableLiveData<>();
+    public static MutableLiveData<ArrayList<Movie>> listMovie;
 
-    public void setMovie() {
-        final ArrayList<Movie> listItems = new ArrayList<>();
+    public LiveData<ArrayList<Movie>> getMovie() {
+        if (listMovie == null) {
+            listMovie = new MutableLiveData<>();
+            loadMovie();
+        }
+        return listMovie;
+    }
 
+    private void loadMovie() {
         String url = "https://api.themoviedb.org/3/discover/movie?api_key=" + API_KEY + "&language=en-US";
+        movieRepository.getDataFromApi(url);
+    }
 
+    public ArrayList<Movie> getResultSearch(String query) {
+//        movieRepository.getSearchDataFromApi();
+        String url = "https://api.themoviedb.org/3/search/movie?api_key=" + API_KEY + "&language=en-US&query=" + query;
         AndroidNetworking.get(url)
                 .setPriority(Priority.LOW)
                 .build()
@@ -39,9 +53,8 @@ public class MovieViewModel extends ViewModel {
                             for (int i = 0; i < list.length(); i++) {
                                 JSONObject movie = list.getJSONObject(i);
                                 Movie movieItems = new Movie(movie);
-                                listItems.add(movieItems);
+                                filteredList.add(movieItems);
                             }
-                            listMovie.postValue(listItems);
                         } catch (JSONException e) {
                             Log.d("Exception", e.getMessage());
                         }
@@ -52,10 +65,6 @@ public class MovieViewModel extends ViewModel {
                         Log.d("onFailure", anError.getMessage());
                     }
                 });
-
-    }
-
-    public LiveData<ArrayList<Movie>> getMovie() {
-        return listMovie;
+        return filteredList;
     }
 }
