@@ -3,10 +3,12 @@ package com.dicoding.submissionMade.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
@@ -17,12 +19,22 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.dicoding.submissionMade.BuildConfig;
 import com.dicoding.submissionMade.R;
 import com.dicoding.submissionMade.adapter.ListMovieAdapter;
 import com.dicoding.submissionMade.item.Movie;
 import com.dicoding.submissionMade.viewModel.MovieViewModel;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 /**
@@ -37,6 +49,7 @@ public class MovieFragment extends Fragment {
     private SearchView searchViewMovie;
     private SwipeRefreshLayout swipeRefreshLayout;
     private LinearLayout lyt_progress;
+    private TextView tvResult;
 
     public MovieFragment() {
         // Required empty public constructor
@@ -47,6 +60,8 @@ public class MovieFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_movie, container, false);
+
+        tvResult = view.findViewById(R.id.tv_result);
 
 //        layout for progress bounce
         lyt_progress = view.findViewById(R.id.lyt_progress);
@@ -68,8 +83,41 @@ public class MovieFragment extends Fragment {
 
                 showLoading(true);
 
-                ArrayList<Movie> result = moviesViewModel.getResultSearch(query);
-                adapter.setData(result);
+                // Todo: menaruh search nya di viewmodel
+
+                final ArrayList<Movie> filteredList = new ArrayList<>();
+                final String API_KEY = BuildConfig.TMDB_API_KEY;
+                String url = "https://api.themoviedb.org/3/search/movie?api_key=" + API_KEY + "&language=en-US&query=" + query;
+
+                AndroidNetworking.get(url)
+                        .setPriority(Priority.LOW)
+                        .build()
+                        .getAsJSONObject(new JSONObjectRequestListener() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    JSONArray list = response.getJSONArray("results");
+                                    for (int i = 0; i < list.length(); i++) {
+                                        JSONObject movie = list.getJSONObject(i);
+                                        Movie movieItems = new Movie(movie);
+                                        filteredList.add(movieItems);
+                                    }
+
+                                    String result = getResources().getString(R.string.result_with_item, Integer.toString(filteredList.size()));
+                                    tvResult.setText(result);
+
+                                    adapter.setData(filteredList);
+
+                                } catch (JSONException e) {
+                                    Log.d("Exception", Objects.requireNonNull(e.getMessage()));
+                                }
+                            }
+
+                            @Override
+                            public void onError(ANError anError) {
+                                Log.d("onFailure", Objects.requireNonNull(anError.getMessage()));
+                            }
+                        });
 
                 showLoading(false);
 
@@ -106,6 +154,8 @@ public class MovieFragment extends Fragment {
             public void run() {
                 recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
                 recyclerView.setAdapter(adapter);
+
+//                Todo: memperbaiki pull and refresh
                 moviesViewModel.getMovie();
 
                 searchViewMovie.setQuery("", false);
@@ -142,6 +192,9 @@ public class MovieFragment extends Fragment {
         @Override
         public void onChanged(ArrayList<Movie> movies) {
             if (movies != null) {
+                String result = getResources().getString(R.string.result);
+                String movieSize = Integer.toString(movies.size());
+                tvResult.setText(result + " " + movieSize);
                 adapter.setData(movies);
             }
 

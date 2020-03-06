@@ -19,9 +19,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class MovieViewModel extends ViewModel {
-    final ArrayList<Movie> filteredList = new ArrayList<>();
+    private final ArrayList<Movie> filteredList = new ArrayList<>();
     private MovieRepository movieRepository = new MovieRepository();
     private static final String API_KEY = BuildConfig.TMDB_API_KEY;
     public static MutableLiveData<ArrayList<Movie>> listMovie;
@@ -56,13 +57,13 @@ public class MovieViewModel extends ViewModel {
                                 filteredList.add(movieItems);
                             }
                         } catch (JSONException e) {
-                            Log.d("Exception", e.getMessage());
+                            Log.d("Exception", Objects.requireNonNull(e.getMessage()));
                         }
                     }
 
                     @Override
                     public void onError(ANError anError) {
-                        Log.d("onFailure", anError.getMessage());
+                        Log.d("onFailure", Objects.requireNonNull(anError.getMessage()));
                     }
                 });
         return filteredList;

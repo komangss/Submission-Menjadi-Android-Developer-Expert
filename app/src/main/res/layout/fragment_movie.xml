@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".fragment.MovieFragment">
 
-
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
@@ -18,13 +17,21 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
+            <!--Todo: Menaruh searchView di Toolbar-->
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/search_movie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layoutDirection="rtl"
                 app:queryHint="@string/search_movie" />
+
+            <TextView
+                android:id="@+id/tv_result"
+                android:layout_marginStart="@dimen/spacing_middle"
+                android:layout_marginBottom="@dimen/spacing_medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/result" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_movies"
@@ -52,6 +59,5 @@
             android:background="@color/colorAccent" />
 
     </LinearLayout>
-
 
 </FrameLayout>

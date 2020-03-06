@@ -3,8 +3,6 @@
 
     <string name="app_name">submissionMADE4</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-
     <string name="movie">Movie</string>
 
     <string name="tv_show">Tv Show</string>
@@ -30,7 +28,7 @@
     <string name="judul_daily">Whats New?</string>
     <string name="desk_daily">Check out latest movies!</string>
 
-    <string name="today_release">movie just released</string>
+    <string name="today_release">New Movie Just Released : </string>
 
     <string name="key_today_reminder">key_today_reminder</string>
     <string name="summary_daily_reminder">You will reveiced daily reminder every 7 AM</string>
@@ -43,6 +41,8 @@
     <string name="description_detail">Description :</string>
     <string name="poster_movie_detail">Poster Movie :</string>
     <string name="favorite_button_detail"><![CDATA[Favorite Button ->]]></string>
+    <string name="result">Result : </string>
+    <string name="result_with_item">Result : %1$s items</string>
 
 
 </resources>

@@ -7,6 +7,9 @@ import org.json.JSONObject;
 
 
 public class Movie implements Parcelable {
+
+//    Todo: menambah items agar di Layout bisa di modifikasi
+
     private String poster, title, description;
     private int idMovie;
 

@@ -21,7 +21,7 @@ import androidx.annotation.Nullable;
  * EXAMPLE :
  * android:layout_width="50dp"
  * android:layout_height="30dp"
- * <p>
+ *
  * To change dot color you can use :
  * android:background="@color/exampleColor"
  */
@@ -103,12 +103,17 @@ public class ViewLoadingDotsBounce extends LinearLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        for (int i = 0; i < OBJECT_SIZE; i++) {
-            if (animator[i].isRunning()) {
-                animator[i].removeAllListeners();
-                animator[i].end();
-                animator[i].cancel();
+//        Todo: fix bug gajelas ini
+        try {
+            for (int i = 0; i < OBJECT_SIZE; i++) {
+                if (animator[i].isRunning()) {
+                    animator[i].removeAllListeners();
+                    animator[i].end();
+                    animator[i].cancel();
+                }
             }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
     }
 

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
@@ -47,6 +48,7 @@ public class TvShowFragment extends Fragment {
     private SearchView searchViewTvShow;
     private SwipeRefreshLayout swipeRefreshLayout;
     private LinearLayout lyt_progress;
+    private TextView tvResult;
 
     public TvShowFragment() {
         // Required empty public constructor
@@ -57,6 +59,8 @@ public class TvShowFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tv_show, container, false);
+
+        tvResult = view.findViewById(R.id.tv_result_tv_show);
 
         lyt_progress = view.findViewById(R.id.lyt_progress_tv_show);
 
@@ -95,6 +99,10 @@ public class TvShowFragment extends Fragment {
                                         TvShow tvShowItems = new TvShow(tvShow);
                                         filteredList.add(tvShowItems);
                                     }
+
+                                    String result = getResources().getString(R.string.result_with_item, Integer.toString(filteredList.size()));
+                                    tvResult.setText(result);
+
                                     adapter.setData(filteredList);
                                 } catch (JSONException e) {
                                     Log.d("Exception", Objects.requireNonNull(e.getMessage()));
@@ -164,6 +172,9 @@ public class TvShowFragment extends Fragment {
         @Override
         public void onChanged(ArrayList<TvShow> tvShows) {
             if (tvShows != null) {
+                String result = getResources().getString(R.string.result);
+                String movieSize = Integer.toString(tvShows.size());
+                tvResult.setText(result + " " + movieSize);
                 adapter.setData(tvShows);
             }
 

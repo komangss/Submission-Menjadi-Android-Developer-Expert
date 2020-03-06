@@ -25,6 +25,15 @@
                 android:layoutDirection="rtl"
                 app:queryHint="@string/search_tv_show" />
 
+            <TextView
+                android:id="@+id/tv_result_tv_show"
+                android:layout_marginStart="@dimen/spacing_middle"
+                android:layout_marginBottom="@dimen/spacing_medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/result" />
+
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_tv_show"
                 android:layout_width="match_parent"

@@ -36,6 +36,8 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class MovieUpcomingReceiver extends BroadcastReceiver {
+    //    Todo: menampilkan semua movie yang rilis dengan Inbox Style, bedakan ID dari setiap notifikasi agar tidak ter - replace oleh notifikasi berikutnya
+    //    Todo: mempercantik notifikasi
 
     private static int mNotifId = 2000;
     private static final String API_KEY = BuildConfig.TMDB_API_KEY;
@@ -131,7 +133,7 @@ public class MovieUpcomingReceiver extends BroadcastReceiver {
                             for (int i = 0; i < list.length(); i++) {
                                 JSONObject movie = list.getJSONObject(i);
                                 Movie movieItems = new Movie(movie);
-                                sendNotification(ctx, ctx.getString(R.string.app_name), ctx.getString(R.string.today_release) + " " + movieItems.getTitle(), notifId);
+                                sendNotification(ctx, ctx.getString(R.string.app_name), ctx.getString(R.string.today_release) + " " + movieItems.getTitle(), notifId + i); // Untuk membedakan ID dari setiap notifikasi agar tidak ter-replace oleh notifikasi berikutnya.
                             }
                         } catch (JSONException e) {
                             Log.d("Exception", Objects.requireNonNull(e.getMessage()));
