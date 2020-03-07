@@ -25,7 +25,7 @@ public class TvShowViewModel extends ViewModel {
         return listTvShow;
     }
 
-    private void loadTvShow() {
+    public void loadTvShow() {
         String url = "https://api.themoviedb.org/3/discover/tv?api_key=" + API_KEY + "&language=en-US";
         tvShowRepository.getDataFromApi(url);
     }

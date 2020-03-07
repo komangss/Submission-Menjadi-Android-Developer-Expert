@@ -35,7 +35,7 @@ public class MovieViewModel extends ViewModel {
         return listMovie;
     }
 
-    private void loadMovie() {
+    public void loadMovie() {
         String url = "https://api.themoviedb.org/3/discover/movie?api_key=" + API_KEY + "&language=en-US";
         movieRepository.getDataFromApi(url);
     }

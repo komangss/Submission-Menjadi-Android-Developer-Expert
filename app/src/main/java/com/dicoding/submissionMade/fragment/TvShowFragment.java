@@ -144,7 +144,7 @@ public class TvShowFragment extends Fragment {
             public void run() {
                 recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
                 recyclerView.setAdapter(adapter);
-                tvShowViewModel.getTvShow();
+                tvShowViewModel.loadTvShow();
 
                 searchViewTvShow.setQuery("", false);
                 searchViewTvShow.clearFocus();
@@ -172,9 +172,9 @@ public class TvShowFragment extends Fragment {
         @Override
         public void onChanged(ArrayList<TvShow> tvShows) {
             if (tvShows != null) {
-                String result = getResources().getString(R.string.result);
-                String movieSize = Integer.toString(tvShows.size());
-                tvResult.setText(result + " " + movieSize);
+                String tvShowSize = Integer.toString(tvShows.size());
+                String result = getResources().getString(R.string.result_with_item, tvShowSize);
+                tvResult.setText(result);
                 adapter.setData(tvShows);
             }
 

@@ -155,8 +155,7 @@ public class MovieFragment extends Fragment {
                 recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
                 recyclerView.setAdapter(adapter);
 
-//                Todo: memperbaiki pull and refresh
-                moviesViewModel.getMovie();
+                moviesViewModel.loadMovie();
 
                 searchViewMovie.setQuery("", false);
                 searchViewMovie.clearFocus();
@@ -192,9 +191,9 @@ public class MovieFragment extends Fragment {
         @Override
         public void onChanged(ArrayList<Movie> movies) {
             if (movies != null) {
-                String result = getResources().getString(R.string.result);
                 String movieSize = Integer.toString(movies.size());
-                tvResult.setText(result + " " + movieSize);
+                String result = getResources().getString(R.string.result_with_item, movieSize);
+                tvResult.setText(result);
                 adapter.setData(movies);
             }
 
