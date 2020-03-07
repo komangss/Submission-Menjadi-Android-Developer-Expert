@@ -1,20 +1,19 @@
 package com.dicoding.submissionMade.fragment;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
 import com.dicoding.submissionMade.R;
-import com.dicoding.submissionMade.activity.FavoriteMovieActivity;
-import com.dicoding.submissionMade.activity.FavoriteTvShowActivity;
+import com.dicoding.submissionMade.adapter.TabAdapter;
+import com.dicoding.submissionMade.fragment.favorite.FavoriteMovieFragment;
+import com.dicoding.submissionMade.fragment.favorite.FavoriteTvShowFragment;
+import com.google.android.material.tabs.TabLayout;
 
 
 /**
@@ -30,31 +29,19 @@ public class FavoriteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_favorite, container, false);
+
+        TabAdapter tabAdapter = new TabAdapter(getFragmentManager());
+        tabAdapter.addFragment(new FavoriteMovieFragment(), getResources().getString(R.string.movie));
+        tabAdapter.addFragment(new FavoriteTvShowFragment(), getResources().getString(R.string.tv_show));
+
+
+        ViewPager viewPager = view.findViewById(R.id.viewPager);
+        viewPager.setAdapter(tabAdapter);
+        TabLayout tabLayout = view.findViewById(R.id.tabLayout);
+        tabLayout.setupWithViewPager(viewPager);
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_favorite, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        Button btnToMovie = getView().findViewById(R.id.btn_to_favorite_movie);
-        btnToMovie.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), FavoriteMovieActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        Button btnToTvShow = getView().findViewById(R.id.btn_to_favorite_tv_show);
-        btnToTvShow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), FavoriteTvShowActivity.class);
-                startActivity(intent);
-            }
-        });
-
+        return view;
     }
 }

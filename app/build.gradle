@@ -1,4 +1,7 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 29
@@ -10,7 +13,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String" , "TMDB_API_KEY" , '"d9c1d6e1b7d10d2ad0ac0c8e7e9abb81"')
+        buildConfigField("String", "TMDB_API_KEY", '"d9c1d6e1b7d10d2ad0ac0c8e7e9abb81"')
     }
     buildTypes {
         release {
@@ -21,6 +24,7 @@ android {
 }
 
 dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.material:material:1.0.0'
@@ -47,6 +51,7 @@ dependencies {
     def room_version = "2.2.3"
 
     implementation "androidx.room:room-runtime:$room_version"
+    kapt "android.arch.persistence.room:compiler:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
     // Test helpers
     testImplementation "androidx.room:room-testing:$room_version"

@@ -1,33 +1,63 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:context=".fragment.FavoriteFragment">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.dicoding.submissionMade.fragment.FavoriteFragment">
 
-    <RelativeLayout
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?actionBarSize"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="@color/colorAccent"
+        app:tabIndicatorHeight="4dp"
+        app:tabBackground="@color/colorPrimary"
+        app:tabTextColor="@android:color/white"
+        app:tabMaxWidth="0dp"
+        app:tabMode="fixed" />
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Button
-            android:layout_marginTop="32dp"
-            android:layout_marginStart="12dp"
-            android:drawableStart="@drawable/ic_local_movies_black_24dp"
-            android:id="@+id/btn_to_favorite_movie"
-            android:layout_width="160dp"
-            android:layout_height="80dp"
-            android:text="@string/favorite_movie" />
+    </androidx.viewpager.widget.ViewPager>
+</LinearLayout>
 
 
-        <Button
-            android:layout_marginTop="32dp"
-            android:layout_marginStart="18dp"
-            android:drawableStart="@drawable/ic_tv_black_24dp"
-            android:layout_toEndOf="@id/btn_to_favorite_movie"
-            android:id="@+id/btn_to_favorite_tv_show"
-            android:layout_width="160dp"
-            android:layout_height="80dp"
-            android:text="@string/favorite_tv_show" />
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+    <!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--    xmlns:tools="http://schemas.android.com/tools"-->
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="wrap_content"-->
+    <!--    tools:context=".fragment.FavoriteFragment">-->
 
-    </RelativeLayout>
-</FrameLayout>
+    <!--    <RelativeLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent">-->
+
+    <!--        <Button-->
+    <!--            android:layout_marginTop="32dp"-->
+    <!--            android:layout_marginStart="12dp"-->
+    <!--            android:drawableStart="@drawable/ic_local_movies_black_24dp"-->
+    <!--            android:id="@+id/btn_to_favorite_movie"-->
+    <!--            android:layout_width="160dp"-->
+    <!--            android:layout_height="80dp"-->
+    <!--            android:text="@string/favorite_movie" />-->
+
+
+    <!--        <Button-->
+    <!--            android:layout_marginTop="32dp"-->
+    <!--            android:layout_marginStart="18dp"-->
+    <!--            android:drawableStart="@drawable/ic_tv_black_24dp"-->
+    <!--            android:layout_toEndOf="@id/btn_to_favorite_movie"-->
+    <!--            android:id="@+id/btn_to_favorite_tv_show"-->
+    <!--            android:layout_width="160dp"-->
+    <!--            android:layout_height="80dp"-->
+    <!--            android:text="@string/favorite_tv_show" />-->
+
+    <!--    </RelativeLayout>-->
+    <!--</FrameLayout>-->

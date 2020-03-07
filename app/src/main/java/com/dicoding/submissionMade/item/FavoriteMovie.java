@@ -18,6 +18,7 @@ public class FavoriteMovie {
     @ColumnInfo(index = true, name = COLUMN_ID)
     private int id;
 
+    //    Todo: Menambah item. tapi tunggu item di network di tambah. hehe :p
     private String poster, title, description;
     private int id_movie;
 

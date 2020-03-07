@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.FavoriteMovieActivity">
+    tools:context="com.dicoding.submissionMade.fragment.favorite.FavoriteTvShowFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_favorite_tv_show"
@@ -11,4 +10,4 @@
         android:layout_height="match_parent"
         tools:listitem="@layout/item_favorite_tv_show" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</FrameLayout>
