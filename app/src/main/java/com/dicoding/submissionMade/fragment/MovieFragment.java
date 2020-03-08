@@ -24,6 +24,7 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.dicoding.submissionMade.BuildConfig;
+import com.dicoding.submissionMade.MainActivity;
 import com.dicoding.submissionMade.R;
 import com.dicoding.submissionMade.adapter.ListMovieAdapter;
 import com.dicoding.submissionMade.item.Movie;
@@ -56,6 +57,15 @@ public class MovieFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ((MainActivity) Objects.requireNonNull(getActivity())).setActionBarTitle(getResources().getString(R.string.action_bar_title_movie));
+        setHasOptionsMenu(true);
+
+        ctx = this.getContext();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -69,7 +79,6 @@ public class MovieFragment extends Fragment {
 
         adapter = new ListMovieAdapter();
         recyclerView = view.findViewById(R.id.rv_movies);
-        ctx = this.getContext();
         recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
         recyclerView.setAdapter(adapter);
 

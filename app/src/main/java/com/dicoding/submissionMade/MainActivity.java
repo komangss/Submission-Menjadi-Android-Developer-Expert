@@ -15,6 +15,8 @@ import com.dicoding.submissionMade.fragment.MovieFragment;
 import com.dicoding.submissionMade.fragment.TvShowFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -77,5 +79,9 @@ public class MainActivity extends AppCompatActivity {
             startActivity(settingIntent);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void setActionBarTitle(String title) {
+        Objects.requireNonNull(getSupportActionBar()).setTitle(title);
     }
 }

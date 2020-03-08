@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -23,6 +24,7 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.dicoding.submissionMade.BuildConfig;
+import com.dicoding.submissionMade.MainActivity;
 import com.dicoding.submissionMade.R;
 import com.dicoding.submissionMade.adapter.ListTvShowAdapter;
 import com.dicoding.submissionMade.item.TvShow;
@@ -55,6 +57,15 @@ public class TvShowFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ((MainActivity) Objects.requireNonNull(getActivity())).setActionBarTitle(getResources().getString(R.string.action_bar_title_tv_show));
+        setHasOptionsMenu(true);
+
+        ctx = this.getContext();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -63,8 +74,6 @@ public class TvShowFragment extends Fragment {
         tvResult = view.findViewById(R.id.tv_result_tv_show);
 
         lyt_progress = view.findViewById(R.id.lyt_progress_tv_show);
-
-        ctx = this.getContext();
 
         adapter = new ListTvShowAdapter();
         recyclerView = view.findViewById(R.id.rv_tv_show);

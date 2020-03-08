@@ -47,5 +47,7 @@
     <string name="key_change_language">key_change_language_setting</string>
     <string name="summary_change_language">You Can Change This App Language in Setting</string>
 
+    <string name="action_bar_title_movie">Movie Catalogue</string>
+    <string name="action_bar_title_tv_show">Tv Show Catalogue</string>
 
 </resources>

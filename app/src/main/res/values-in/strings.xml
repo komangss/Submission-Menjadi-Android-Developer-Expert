@@ -42,5 +42,7 @@
     <string name="key_change_language">key_change_language_setting</string>
     <string name="summary_change_language">Kamu bisa mengganti bahasa di aplikasi ini melalui pengaturan</string>
 
+    <string name="action_bar_title_movie">Film</string>
+    <string name="action_bar_title_tv_show">Acara Tv</string>
 
 </resources>
