@@ -17,16 +17,9 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!--Todo: Menaruh searchView di Toolbar-->
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/search_movie"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layoutDirection="rtl"
-                app:queryHint="@string/search_movie" />
-
             <TextView
                 android:id="@+id/tv_result"
+                android:layout_marginTop="@dimen/spacing_medium"
                 android:layout_marginStart="@dimen/spacing_middle"
                 android:layout_marginBottom="@dimen/spacing_medium"
                 android:layout_width="match_parent"

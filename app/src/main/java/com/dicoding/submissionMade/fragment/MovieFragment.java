@@ -3,13 +3,16 @@ package com.dicoding.submissionMade.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
@@ -19,20 +22,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.common.Priority;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.dicoding.submissionMade.BuildConfig;
 import com.dicoding.submissionMade.MainActivity;
 import com.dicoding.submissionMade.R;
 import com.dicoding.submissionMade.adapter.ListMovieAdapter;
 import com.dicoding.submissionMade.item.Movie;
 import com.dicoding.submissionMade.viewModel.MovieViewModel;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -47,10 +41,10 @@ public class MovieFragment extends Fragment {
     private Context ctx;
     private RecyclerView recyclerView;
     private MovieViewModel moviesViewModel;
-    private SearchView searchViewMovie;
     private SwipeRefreshLayout swipeRefreshLayout;
     private LinearLayout lyt_progress;
     private TextView tvResult;
+    private String keyword = "";
 
     public MovieFragment() {
         // Required empty public constructor
@@ -85,60 +79,6 @@ public class MovieFragment extends Fragment {
         moviesViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
         moviesViewModel.getMovie().observe(getViewLifecycleOwner(), getMovies);
 
-        searchViewMovie = view.findViewById(R.id.search_movie); // inititate a search view
-        searchViewMovie.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-
-                showLoading(true);
-
-                // Todo: menaruh search nya di viewmodel
-
-                final ArrayList<Movie> filteredList = new ArrayList<>();
-                final String API_KEY = BuildConfig.TMDB_API_KEY;
-                String url = "https://api.themoviedb.org/3/search/movie?api_key=" + API_KEY + "&language=en-US&query=" + query;
-
-                AndroidNetworking.get(url)
-                        .setPriority(Priority.LOW)
-                        .build()
-                        .getAsJSONObject(new JSONObjectRequestListener() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                try {
-                                    JSONArray list = response.getJSONArray("results");
-                                    for (int i = 0; i < list.length(); i++) {
-                                        JSONObject movie = list.getJSONObject(i);
-                                        Movie movieItems = new Movie(movie);
-                                        filteredList.add(movieItems);
-                                    }
-
-                                    String result = getResources().getString(R.string.result_with_item, Integer.toString(filteredList.size()));
-                                    tvResult.setText(result);
-
-                                    adapter.setData(filteredList);
-
-                                } catch (JSONException e) {
-                                    Log.d("Exception", Objects.requireNonNull(e.getMessage()));
-                                }
-                            }
-
-                            @Override
-                            public void onError(ANError anError) {
-                                Log.d("onFailure", Objects.requireNonNull(anError.getMessage()));
-                            }
-                        });
-
-                showLoading(false);
-
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
-
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -165,9 +105,6 @@ public class MovieFragment extends Fragment {
                 recyclerView.setAdapter(adapter);
 
                 moviesViewModel.loadMovie();
-
-                searchViewMovie.setQuery("", false);
-                searchViewMovie.clearFocus();
 
                 swipeProgress(false);
             }
@@ -204,10 +141,61 @@ public class MovieFragment extends Fragment {
                 String result = getResources().getString(R.string.result_with_item, movieSize);
                 tvResult.setText(result);
                 adapter.setData(movies);
+                recyclerView.setAdapter(adapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
             }
 
             showLoading(false);
 
         }
     };
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        inflater.inflate(R.menu.search_menu, menu);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        MenuItem mSearchAction = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) mSearchAction.getActionView();
+
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if (!query.isEmpty()) {
+                    keyword = query;
+                    loadData(keyword);
+                } else {
+                    keyword = "";
+                    loadData(keyword);
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (!newText.isEmpty()) {
+                    keyword = newText;
+                    loadData(keyword);
+                } else {
+                    keyword = "";
+                    loadData(keyword);
+                }
+                return false;
+            }
+        });
+    }
+
+    private void loadData(String keyword) {
+        if (keyword.equals("")) {
+            moviesViewModel.getMovie();
+        } else {
+            moviesViewModel.searchMovie(keyword);
+        }
+    }
 }
