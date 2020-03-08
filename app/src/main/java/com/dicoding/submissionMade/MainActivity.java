@@ -2,7 +2,6 @@ package com.dicoding.submissionMade;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -10,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import com.dicoding.submissionMade.activity.NotificationSettingActivity;
+import com.dicoding.submissionMade.activity.SettingActivity;
 import com.dicoding.submissionMade.fragment.FavoriteFragment;
 import com.dicoding.submissionMade.fragment.MovieFragment;
 import com.dicoding.submissionMade.fragment.TvShowFragment;
@@ -52,8 +51,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         setContentView(R.layout.activity_main);
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
@@ -75,13 +72,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Todo: Membuat Setting nya menjadi satu
-        if (item.getItemId() == R.id.action_change_settings) {
-            Intent mIntent = new Intent(Settings.ACTION_LOCALE_SETTINGS);
-            startActivity(mIntent);
-        } else {
-            Intent notifSettingIntent = new Intent(this, NotificationSettingActivity.class);
-            startActivity(notifSettingIntent);
+        if (item.getItemId() == R.id.menu_item_settings) {
+            Intent settingIntent = new Intent(this, SettingActivity.class);
+            startActivity(settingIntent);
         }
         return super.onOptionsItemSelected(item);
     }

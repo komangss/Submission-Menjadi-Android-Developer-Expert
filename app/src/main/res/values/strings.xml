@@ -29,7 +29,6 @@
     <string name="desk_daily">Check out latest movies!</string>
 
     <string name="today_release">New Movie Just Released : </string>
-
     <string name="key_today_reminder">key_today_reminder</string>
     <string name="summary_daily_reminder">You will reveiced daily reminder every 7 AM</string>
     <string name="daily_reminder">Daily Reminder</string>
@@ -43,6 +42,10 @@
     <string name="favorite_button_detail"><![CDATA[Favorite Button ->]]></string>
     <string name="result">Result : </string>
     <string name="result_with_item">Result : %1$s items</string>
+
+    <string name="title_lang_setting">Language</string>
+    <string name="key_change_language">key_change_language_setting</string>
+    <string name="summary_change_language">You Can Change This App Language in Setting</string>
 
 
 </resources>

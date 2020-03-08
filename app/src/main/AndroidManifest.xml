@@ -19,7 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.NotificationSettingActivity" />
+        <activity android:name=".activity.SettingActivity" />
         <activity android:name=".activity.DetailTvShowActivity" />
         <activity android:name=".activity.DetailMovieActivity" />
 

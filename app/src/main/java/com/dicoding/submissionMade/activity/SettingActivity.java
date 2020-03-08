@@ -14,10 +14,7 @@ import com.dicoding.submissionMade.notification.MovieUpcomingReceiver;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NotificationSettingActivity extends PreferenceActivity {
-
-
-
+public class SettingActivity extends PreferenceActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +35,9 @@ public class NotificationSettingActivity extends PreferenceActivity {
         public boolean onPreferenceChange(Preference preference, Object newValue) {
             String key = preference.getKey();
             boolean value = (boolean) newValue;
+
+//            Note: change language setting intent is from the xml
+
             if (key.equals(getString(R.string.key_today_reminder))) {
                 if (value) {
                     mMovieDailyReceiver.setAlarm(getActivity());

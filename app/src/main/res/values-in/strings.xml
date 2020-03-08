@@ -38,5 +38,9 @@
     <string name="result">Hasil :</string>
     <string name="result_with_item">Hasil : %1$s </string>
 
+    <string name="title_lang_setting">Bahasa</string>
+    <string name="key_change_language">key_change_language_setting</string>
+    <string name="summary_change_language">Kamu bisa mengganti bahasa di aplikasi ini melalui pengaturan</string>
+
 
 </resources>
