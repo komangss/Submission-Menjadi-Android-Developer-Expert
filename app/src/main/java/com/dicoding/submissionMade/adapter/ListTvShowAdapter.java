@@ -55,7 +55,7 @@ public class ListTvShowAdapter extends RecyclerView.Adapter<ListTvShowAdapter.Li
             imgPhoto = itemView.findViewById(R.id.img_item_photo2);
             tvName = itemView.findViewById(R.id.tv_item_name2);
             tvFrom = itemView.findViewById(R.id.tv_item_from2);
-            btnToDetailTvShow = itemView.findViewById(R.id.btn_tvshow);
+            btnToDetailTvShow = itemView.findViewById(R.id.btn_tv_show);
 
             btnToDetailTvShow.setOnClickListener(new View.OnClickListener() {
                 @Override

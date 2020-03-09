@@ -91,11 +91,6 @@ public class MovieFragment extends Fragment {
 
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
     private void pullAndRefresh() {
         swipeProgress(true);
         new Handler().postDelayed(new Runnable() {
@@ -144,6 +139,8 @@ public class MovieFragment extends Fragment {
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
             }
+
+//            Todo: cek jika datanya 0 berarti tidak ada movie
 
             showLoading(false);
 

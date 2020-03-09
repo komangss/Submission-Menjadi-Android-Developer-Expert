@@ -6,6 +6,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.ANRequest;
 import com.androidnetworking.common.ANResponse;
 import com.androidnetworking.common.Priority;
+import com.dicoding.submissionMade.BuildConfig;
 import com.dicoding.submissionMade.item.TvShow;
 import com.dicoding.submissionMade.viewModel.TvShowViewModel;
 
@@ -56,4 +57,44 @@ public class TvShowRepository {
         }
     }
 
+
+    public void getSearchResult(String query) {
+        String url = "https://api.themoviedb.org/3/search/tv?api_key=" + BuildConfig.TMDB_API_KEY + "&language=en-US&query=" + query;
+        new TvShowRepository.GetSearchResultAsyncTask().execute(url);
+    }
+
+    static class GetSearchResultAsyncTask extends AsyncTask<String, Void, ArrayList<TvShow>> {
+
+        @Override
+        protected ArrayList<TvShow> doInBackground(String... strings) {
+            ArrayList<TvShow> listTvShow = new ArrayList<>();
+            ANRequest request = AndroidNetworking.get(strings[0]).setPriority(Priority.LOW).setExecutor(Executors.newSingleThreadExecutor()).build();
+            ANResponse<JSONObject> response = request.executeForJSONObject();
+
+            if (response.isSuccess()) {
+                JSONObject jsonObject = response.getResult();
+                JSONArray list;
+                try {
+                    list = jsonObject.getJSONArray("results");
+                    for (int i = 0; i < list.length(); i++) {
+                        JSONObject tvShow = list.getJSONObject(i);
+                        TvShow tvShowItems = new TvShow(tvShow);
+                        listTvShow.add(tvShowItems);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            } else {
+                //handle error
+            }
+            return listTvShow;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<TvShow> movies) {
+            super.onPostExecute(movies);
+            TvShowViewModel.listTvShow.postValue(movies);
+        }
+    }
 }

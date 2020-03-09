@@ -3,13 +3,16 @@ package com.dicoding.submissionMade.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
@@ -19,20 +22,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.common.Priority;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.dicoding.submissionMade.BuildConfig;
 import com.dicoding.submissionMade.MainActivity;
 import com.dicoding.submissionMade.R;
 import com.dicoding.submissionMade.adapter.ListTvShowAdapter;
 import com.dicoding.submissionMade.item.TvShow;
 import com.dicoding.submissionMade.viewModel.TvShowViewModel;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -47,10 +41,10 @@ public class TvShowFragment extends Fragment {
     private Context ctx;
     private RecyclerView recyclerView;
     private TvShowViewModel tvShowViewModel;
-    private SearchView searchViewTvShow;
     private SwipeRefreshLayout swipeRefreshLayout;
     private LinearLayout lyt_progress;
     private TextView tvResult;
+    private String keyword = "";
 
     public TvShowFragment() {
         // Required empty public constructor
@@ -70,10 +64,9 @@ public class TvShowFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tv_show, container, false);
-
         tvResult = view.findViewById(R.id.tv_result_tv_show);
-
         lyt_progress = view.findViewById(R.id.lyt_progress_tv_show);
+        showLoading(true);
 
         adapter = new ListTvShowAdapter();
         recyclerView = view.findViewById(R.id.rv_tv_show);
@@ -83,56 +76,6 @@ public class TvShowFragment extends Fragment {
         tvShowViewModel = new ViewModelProvider(this).get(TvShowViewModel.class);
         tvShowViewModel.getTvShow().observe(getViewLifecycleOwner(), getTvShow);
 
-        showLoading(true);
-
-        searchViewTvShow = view.findViewById(R.id.search_tv_show);
-        searchViewTvShow.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                showLoading(true);
-
-                final ArrayList<TvShow> filteredList = new ArrayList<>();
-                final String API_KEY = BuildConfig.TMDB_API_KEY;
-                String url = "https://api.themoviedb.org/3/search/tv?api_key=" + API_KEY + "&language=en-US&query=" + query;
-
-                AndroidNetworking.get(url)
-                        .setPriority(Priority.LOW)
-                        .build()
-                        .getAsJSONObject(new JSONObjectRequestListener() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                try {
-                                    JSONArray list = response.getJSONArray("results");
-                                    for (int i = 0; i < list.length(); i++) {
-                                        JSONObject tvShow = list.getJSONObject(i);
-                                        TvShow tvShowItems = new TvShow(tvShow);
-                                        filteredList.add(tvShowItems);
-                                    }
-
-                                    String result = getResources().getString(R.string.result_with_item, Integer.toString(filteredList.size()));
-                                    tvResult.setText(result);
-
-                                    adapter.setData(filteredList);
-                                } catch (JSONException e) {
-                                    Log.d("Exception", Objects.requireNonNull(e.getMessage()));
-                                }
-                            }
-
-                            @Override
-                            public void onError(ANError anError) {
-                                Log.d("onFailure", Objects.requireNonNull(anError.getMessage()));
-                            }
-                        });
-
-                showLoading(false);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
 
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -142,6 +85,7 @@ public class TvShowFragment extends Fragment {
             }
         });
 
+        showLoading(false);
         return view;
 
     }
@@ -154,9 +98,6 @@ public class TvShowFragment extends Fragment {
                 recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
                 recyclerView.setAdapter(adapter);
                 tvShowViewModel.loadTvShow();
-
-                searchViewTvShow.setQuery("", false);
-                searchViewTvShow.clearFocus();
 
                 swipeProgress(false);
             }
@@ -198,6 +139,54 @@ public class TvShowFragment extends Fragment {
             lyt_progress.setAlpha(1.0f);
         } else {
             lyt_progress.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.search_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        MenuItem mSearchAction = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) mSearchAction.getActionView();
+
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if (!query.isEmpty()) {
+                    keyword = query;
+                    loadData(keyword);
+                } else {
+                    keyword = "";
+                    loadData(keyword);
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (!newText.isEmpty()) {
+                    keyword = newText;
+                    loadData(keyword);
+                } else {
+                    keyword = "";
+                    loadData(keyword);
+                }
+                return false;
+            }
+        });
+    }
+
+    private void loadData(String keyword) {
+        if (keyword.equals("")) {
+            tvShowViewModel.getTvShow();
+        } else {
+            tvShowViewModel.searchTvShow(keyword);
         }
     }
 }

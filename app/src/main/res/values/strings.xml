@@ -49,5 +49,7 @@
 
     <string name="action_bar_title_movie">Movie Catalogue</string>
     <string name="action_bar_title_tv_show">Tv Show Catalogue</string>
+    <string name="poster_image">poster image</string>
+    <string name="see_details">see details!</string>
 
 </resources>

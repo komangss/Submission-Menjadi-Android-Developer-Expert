@@ -25,6 +25,7 @@ public class FavoriteFragment extends Fragment {
         // Required empty public constructor
     }
 
+//    Todo: Merubah title toolbar
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
