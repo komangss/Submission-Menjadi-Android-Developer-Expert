@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:lines="3"
-            android:text="@string/description" />
+            android:text="@string/overview" />
 
     </LinearLayout>
 

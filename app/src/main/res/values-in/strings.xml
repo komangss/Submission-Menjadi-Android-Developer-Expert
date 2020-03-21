@@ -44,7 +44,7 @@
 
     <string name="action_bar_title_movie">Film</string>
     <string name="action_bar_title_tv_show">Acara Tv</string>
-    <string name="poster_image">gambar poster</string>
+    <string name="poster_image">gambar poster_path</string>
     <string name="see_details">Lihat Detail!</string>
 
 </resources>

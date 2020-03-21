@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="3"
-            tools:text="movie description" />
+            tools:text="movie overview" />
 
     </LinearLayout>
 

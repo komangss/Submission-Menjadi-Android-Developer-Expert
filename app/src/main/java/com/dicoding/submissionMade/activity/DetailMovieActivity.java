@@ -45,11 +45,12 @@ public class DetailMovieActivity extends AppCompatActivity {
         parent_view = findViewById(R.id.coordinator_layout);
 
         try {
+
             Movie movie = getIntent().getParcelableExtra(EXTRA_MOVIE);
 
             tvTitle.setText(movie.getTitle());
-            tvDescription.setText(movie.getDescription());
-            String url_image = "https://image.tmdb.org/t/p/w185" + movie.getPoster();
+            tvDescription.setText(movie.getOverview());
+            String url_image = "https://image.tmdb.org/t/p/w185" + movie.getPoster_path();
             Glide.with(this)
                     .load(url_image)
                     .placeholder(R.color.colorAccent)
@@ -57,7 +58,7 @@ public class DetailMovieActivity extends AppCompatActivity {
                     .into(imgPoster);
             idMovie = movie.getIdMovie();
 
-            favoriteMovie = new FavoriteMovie(movie.getPoster(), movie.getTitle(), movie.getDescription(), movie.getIdMovie());
+            favoriteMovie = new FavoriteMovie(movie.getPoster_path(), movie.getTitle(), movie.getOverview(), movie.getIdMovie());
 
         } catch (Exception e) {
             e.printStackTrace();

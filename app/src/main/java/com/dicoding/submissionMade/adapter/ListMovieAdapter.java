@@ -64,8 +64,8 @@ public class ListMovieAdapter extends RecyclerView.Adapter<ListMovieAdapter.List
                     Movie movie = listMovie.get(position);
 
                     movie.setTitle(movie.getTitle());
-                    movie.setDescription(movie.getDescription());
-                    movie.setPoster(movie.getPoster());
+                    movie.setOverview(movie.getOverview());
+                    movie.setPoster_path(movie.getPoster_path());
 
                     Intent showMovieActivityIntent = new Intent(itemView.getContext(), DetailMovieActivity.class);
                     showMovieActivityIntent.putExtra(DetailMovieActivity.EXTRA_MOVIE, movie);
@@ -80,8 +80,8 @@ public class ListMovieAdapter extends RecyclerView.Adapter<ListMovieAdapter.List
             Movie movie = listMovie.get(position);
 
             movie.setTitle(movie.getTitle());
-            movie.setDescription(movie.getDescription());
-            movie.setPoster(movie.getPoster());
+            movie.setOverview(movie.getOverview());
+            movie.setPoster_path(movie.getPoster_path());
 
             Intent showMovieActivityIntent = new Intent(itemView.getContext(), DetailMovieActivity.class);
             showMovieActivityIntent.putExtra(DetailMovieActivity.EXTRA_MOVIE, movie);
@@ -89,13 +89,11 @@ public class ListMovieAdapter extends RecyclerView.Adapter<ListMovieAdapter.List
         }
 
         void bind(Movie item) {
-            String url_image = "https://image.tmdb.org/t/p/w185" + item.getPoster();
-
             tvName.setText(item.getTitle());
-            tvFrom.setText(item.getDescription());
+            tvFrom.setText(item.getOverview());
 
             Glide.with(itemView.getContext())
-                    .load(url_image)
+                    .load("https://image.tmdb.org/t/p/w185" + item.getPoster_path())
                     .placeholder(R.color.colorAccent)
                     .dontAnimate()
                     .into(imgPhoto);

@@ -9,7 +9,7 @@
     <string name="change_language_settings">change language settings</string>
     <string name="ini_main_activity" translatable="false">ini main activity</string>
     <string name="title_movie_received" translatable="false">title_movie_received</string>
-    <string name="description" translatable="false">description</string>
+    <string name="overview" translatable="false">overview</string>
     <string name="title_movie_received2" translatable="false">title_movie_received2</string>
 
 
@@ -49,7 +49,7 @@
 
     <string name="action_bar_title_movie">Movie Catalogue</string>
     <string name="action_bar_title_tv_show">Tv Show Catalogue</string>
-    <string name="poster_image">poster image</string>
+    <string name="poster_image">poster_path image</string>
     <string name="see_details">see details!</string>
 
 </resources>
