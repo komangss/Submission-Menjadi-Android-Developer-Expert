@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -47,31 +47,16 @@ public class ListMovieAdapter extends RecyclerView.Adapter<ListMovieAdapter.List
     class ListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView imgPhoto;
         TextView tvName, tvFrom;
-        Button btnDetailMovie;
+        RatingBar ratingBar;
 
         ListViewHolder(final View itemView) {
             super(itemView);
             imgPhoto = itemView.findViewById(R.id.img_item_photo);
             tvName = itemView.findViewById(R.id.tv_item_name);
             tvFrom = itemView.findViewById(R.id.tv_item_from);
-            btnDetailMovie = itemView.findViewById(R.id.btn_movie);
+            ratingBar = itemView.findViewById(R.id.ratingBar);
 
             itemView.setOnClickListener(this);
-            btnDetailMovie.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    Movie movie = listMovie.get(position);
-
-                    movie.setTitle(movie.getTitle());
-                    movie.setOverview(movie.getOverview());
-                    movie.setPoster_path(movie.getPoster_path());
-
-                    Intent showMovieActivityIntent = new Intent(itemView.getContext(), DetailMovieActivity.class);
-                    showMovieActivityIntent.putExtra(DetailMovieActivity.EXTRA_MOVIE, movie);
-                    v.getContext().startActivity(showMovieActivityIntent);
-                }
-            });
         }
 
         @Override
@@ -97,6 +82,8 @@ public class ListMovieAdapter extends RecyclerView.Adapter<ListMovieAdapter.List
                     .placeholder(R.color.colorAccent)
                     .dontAnimate()
                     .into(imgPhoto);
+
+            ratingBar.setRating((float) (item.getVote_average() / 2));
         }
     }
 }

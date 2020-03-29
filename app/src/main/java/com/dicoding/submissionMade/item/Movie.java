@@ -3,10 +3,7 @@ package com.dicoding.submissionMade.item;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 public class Movie implements Parcelable {
     private double popularity;
@@ -18,9 +15,9 @@ public class Movie implements Parcelable {
     private String backdrop_path;
     private String original_language;
     private String original_title;
-    private ArrayList<Integer> genre_ids;
+    //    private ArrayList<Integer> genre_ids; // Todo : mencari cara agar bisa menampilkan genre ini
     private String title;
-    private int vote_average;
+    private double vote_average;
     private String overview;
     private String release_date;
 
@@ -36,15 +33,16 @@ public class Movie implements Parcelable {
             this.original_language = object.getString("original_language");
             this.original_title = object.getString("original_title");
 
-            JSONArray genre = object.getJSONArray("genre_ids");
-            for (int i = 0; i < genre.length(); i++) {
-                this.genre_ids.add(genre.getInt(i));
-            }
-
             this.title = object.getString("title");
-            this.vote_average = object.getInt("vote_average");
+            this.vote_average = object.getDouble("vote_average");
             this.overview = object.getString("overview");
             this.release_date = object.getString("release_date");
+
+//            JSONArray genre = object.getJSONArray("genre_ids"); // ini bikin bug
+//            for (int i = 0; i < genre.length(); i++) {
+//                this.genre_ids.add(genre.getInt(i));
+//            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -61,7 +59,7 @@ public class Movie implements Parcelable {
         original_language = in.readString();
         original_title = in.readString();
         title = in.readString();
-        vote_average = in.readInt();
+        vote_average = in.readDouble();
         overview = in.readString();
         release_date = in.readString();
     }
@@ -150,13 +148,13 @@ public class Movie implements Parcelable {
         this.original_title = original_title;
     }
 
-    public ArrayList<Integer> getGenre_ids() {
-        return genre_ids;
-    }
-
-    public void setGenre_ids(ArrayList<Integer> genre_ids) {
-        this.genre_ids = genre_ids;
-    }
+//    public ArrayList<Integer> getGenre_ids() {
+//        return genre_ids;
+//    }
+//
+//    public void setGenre_ids(ArrayList<Integer> genre_ids) {
+//        this.genre_ids = genre_ids;
+//    }
 
     public String getTitle() {
         return title;
@@ -166,7 +164,7 @@ public class Movie implements Parcelable {
         this.title = title;
     }
 
-    public int getVote_average() {
+    public double getVote_average() {
         return vote_average;
     }
 
@@ -207,7 +205,7 @@ public class Movie implements Parcelable {
         dest.writeString(original_language);
         dest.writeString(original_title);
         dest.writeString(title);
-        dest.writeInt(vote_average);
+        dest.writeDouble(vote_average);
         dest.writeString(overview);
         dest.writeString(release_date);
     }
