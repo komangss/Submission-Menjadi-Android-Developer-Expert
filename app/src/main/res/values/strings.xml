@@ -52,4 +52,9 @@
     <string name="poster_image">poster_path image</string>
     <string name="see_details">see details!</string>
 
+
+    <string name="widget_click_toast">Movie : %1$s</string>
+    <string name="overview_example">overview_example</string>
+    <string name="movie_overview">Movie Overview</string>
+
 </resources>

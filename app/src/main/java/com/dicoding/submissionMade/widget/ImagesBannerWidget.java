@@ -3,7 +3,6 @@ package com.dicoding.submissionMade.widget;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -13,11 +12,10 @@ import android.widget.Toast;
 import com.dicoding.submissionMade.R;
 
 public class ImagesBannerWidget extends AppWidgetProvider {
-//    Todo: Tambahkan Fitur Update Widget
-//    referensi : https://www.dicoding.com/academies/14/discussions/3406
 
     private static final String TOAST_ACTION = "com.dicoding.picodiploma.TOAST_ACTION";
     public static final String EXTRA_ITEM = "com.dicoding.picodiploma.EXTRA_ITEM";
+    public static final String EXTRA_TITLE = "com.dicoding.picodiploma.EXTRA_TITLE";
 
     private static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         Intent intent = new Intent(context, StackWidgetService.class);
@@ -42,18 +40,10 @@ public class ImagesBannerWidget extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction() != null) {
             if (intent.getAction().equals(TOAST_ACTION)) {
-                int viewIndex = intent.getIntExtra(EXTRA_ITEM, 0);
-
-//                Todo: membuat Toast menampilkan nama Movie
-
-                Toast.makeText(context, "Touched view " + viewIndex, Toast.LENGTH_SHORT).show();
+                String toastText = context.getResources().getString(R.string.widget_click_toast, intent.getStringExtra(EXTRA_TITLE));
+                Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show();
             }
         }
-
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-        ComponentName thisWidget = new ComponentName(context, ImagesBannerWidget.class);
-        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
-        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.stack_view);
         super.onReceive(context, intent);
     }
 

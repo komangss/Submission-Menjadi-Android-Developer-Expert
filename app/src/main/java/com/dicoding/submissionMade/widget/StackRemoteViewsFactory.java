@@ -79,7 +79,9 @@ public class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFa
 
         Bundle extras = new Bundle();
         extras.putInt(ImagesBannerWidget.EXTRA_ITEM, i);
+
         Intent fillInIntent = new Intent();
+        fillInIntent.putExtra(ImagesBannerWidget.EXTRA_TITLE, item.getTitle());
         fillInIntent.putExtras(extras);
 
         rv.setOnClickFillInIntent(R.id.imageView, fillInIntent);

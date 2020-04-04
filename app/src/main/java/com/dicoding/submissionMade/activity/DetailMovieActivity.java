@@ -1,5 +1,8 @@
 package com.dicoding.submissionMade.activity;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +20,7 @@ import com.dicoding.submissionMade.R;
 import com.dicoding.submissionMade.item.FavoriteMovie;
 import com.dicoding.submissionMade.item.Movie;
 import com.dicoding.submissionMade.viewModel.FavoriteMovieViewModel;
+import com.dicoding.submissionMade.widget.ImagesBannerWidget;
 import com.google.android.material.snackbar.Snackbar;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
@@ -31,32 +35,51 @@ public class DetailMovieActivity extends AppCompatActivity {
     private int idMovie;
     private FavoriteMovie favoriteMovie;
     private ConstraintLayout parent_view;
+    private Context ctx;
 
+//    Todo: merapihkan code di onCreate
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_movie);
 
-        TextView tvTitle = findViewById(R.id.tv_title_received),
-                tvDescription = findViewById(R.id.txt_description_received);
-        ImageView imgPoster = findViewById(R.id.img_received);
+        ctx = getApplicationContext();
+        TextView tvTitle = findViewById(R.id.tv_title_movie),
+                tvOverview = findViewById(R.id.tv_overview_movie),
+                tvRating = findViewById(R.id.tv_rating_movie);
+//                tvDuration = findViewById(R.id.tv_duration_movie);
+
+        ImageView imgPoster = findViewById(R.id.img_poster_movie),
+                imgBackdrop = findViewById(R.id.img_backdrop);
+
         final LikeButton likeButton = findViewById(R.id.favorite_button);
-        parent_view = findViewById(R.id.coordinator_layout);
+        parent_view = findViewById(R.id.parent_constraint_layout);
+//        tv_rating_movie
 
         try {
 
             Movie movie = getIntent().getParcelableExtra(EXTRA_MOVIE);
 
             tvTitle.setText(movie.getTitle());
-            tvDescription.setText(movie.getOverview());
-            String url_image = "https://image.tmdb.org/t/p/w185" + movie.getPoster_path();
+            tvOverview.setText(movie.getOverview());
+            String rating = movie.getVote_average() / 2 + " / 5";
+            tvRating.setText(rating);
+            String url_img_poster = "https://image.tmdb.org/t/p/w185" + movie.getPoster_path();
+            String url_img_backdrop = "https://image.tmdb.org/t/p/w780" + movie.getBackdrop_path();
             Glide.with(this)
-                    .load(url_image)
+                    .load(url_img_poster)
                     .placeholder(R.color.colorAccent)
                     .dontAnimate()
                     .into(imgPoster);
+            Glide.with(this)
+                    .load(url_img_backdrop)
+                    .placeholder(R.color.colorAccent)
+                    .dontAnimate()
+                    .into(imgBackdrop);
             idMovie = movie.getIdMovie();
+
+            getSupportActionBar().setTitle(movie.getTitle());
 
             favoriteMovie = new FavoriteMovie(movie.getPoster_path(), movie.getTitle(), movie.getOverview(), movie.getIdMovie());
 
@@ -86,12 +109,14 @@ public class DetailMovieActivity extends AppCompatActivity {
             public void liked(LikeButton likeButton) {
                 favoriteMovieViewModel.insert(favoriteMovie);
                 snackBarIconSuccess();
+                notifyWidgetToUpdate();
             }
 
             @Override
             public void unLiked(LikeButton likeButton) {
                 favoriteMovieViewModel.deleteMovieById(idMovie);
                 snackBarIconError();
+                notifyWidgetToUpdate();
             }
         });
 
@@ -128,5 +153,12 @@ public class DetailMovieActivity extends AppCompatActivity {
         (custom_view.findViewById(R.id.parent_view)).setBackgroundColor(getResources().getColor(R.color.green_500));
         snackBarView.addView(custom_view, 0);
         snackbar.show();
+    }
+
+    private void notifyWidgetToUpdate() {
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(ctx);
+        ComponentName thisWidget = new ComponentName(ctx, ImagesBannerWidget.class);
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.stack_view);
     }
 }

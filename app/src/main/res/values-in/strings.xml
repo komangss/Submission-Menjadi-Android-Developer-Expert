@@ -47,4 +47,7 @@
     <string name="poster_image">gambar poster_path</string>
     <string name="see_details">Lihat Detail!</string>
 
+    <string name="widget_click_toast">Film : %1$s</string>
+    <string name="overview_example">overview_example</string>
+    <string name="movie_overview">Detail Movie</string>
 </resources>
