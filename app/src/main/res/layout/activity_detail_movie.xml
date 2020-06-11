@@ -125,7 +125,6 @@
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:id="@+id/lblOverview"
                 android:layout_marginBottom="8dp"
                 android:text="@string/movie_overview" />
 

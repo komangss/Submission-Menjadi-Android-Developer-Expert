@@ -6,23 +6,15 @@
     <string name="movie">Movie</string>
 
     <string name="tv_show">Tv Show</string>
-    <string name="change_language_settings">change language settings</string>
     <string name="ini_main_activity" translatable="false">ini main activity</string>
-    <string name="title_movie_received" translatable="false">title_movie_received</string>
     <string name="overview" translatable="false">overview</string>
     <string name="title_movie_received2" translatable="false">title_movie_received2</string>
 
-
-    <string name="favorite_movie">Favorite Movie</string>
-    <string name="favorite_tv_show">Favorite Tv Show</string>
 
     <string name="remove_from_favorite">remove from favorite</string>
     <string name="add_from_favorite">Add To Favorite</string>
     <string name="appwidget_text">Movie Banner</string>
     <string name="empty_text">NO DATA</string>
-
-    <string name="search_movie">search movie…</string>
-    <string name="search_tv_show">search tv show…</string>
 
 
     <string name="judul_daily">Whats New?</string>

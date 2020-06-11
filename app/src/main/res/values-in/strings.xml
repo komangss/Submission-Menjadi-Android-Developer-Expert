@@ -4,17 +4,9 @@
     <string name="movie">Film</string>
 
     <string name="tv_show">Acara TV</string>
-    <string name="change_language_settings">Ubah Pengaturan Bahasa</string>
-
-    <string name="favorite_movie">Film Favorit</string>
-    <string name="favorite_tv_show">Acara Tv Favorit</string>
 
     <string name="remove_from_favorite">Dihapus Dari Favorit</string>
     <string name="add_from_favorite">Ditambahkan Dari Favorit</string>
-
-
-    <string name="search_movie">cari film…</string>
-    <string name="search_tv_show">cari acara tv…</string>
 
 
     <string name="appwidget_text">Banner Film</string>
