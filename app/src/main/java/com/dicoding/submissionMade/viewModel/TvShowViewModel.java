@@ -11,7 +11,6 @@ import com.dicoding.submissionMade.repository.TvShowRepository;
 
 import java.util.ArrayList;
 
-
 public class TvShowViewModel extends ViewModel {
     private TvShowRepository tvShowRepository = new TvShowRepository();
     private static final String API_KEY = BuildConfig.TMDB_API_KEY;
